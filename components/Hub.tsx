@@ -1,0 +1,357 @@
+
+import React from 'react';
+import { Sprout, Satellite, Wifi, MessageSquare, Users, Plane, ArrowRight, Scan, PieChart, Crosshair, ArrowLeft, FlaskConical } from 'lucide-react';
+import { ProductItem } from '../types';
+
+export const productsData: ProductItem[] = [
+  {
+    id: "PROD-PEST",
+    title: "PEST AI",
+    subtitle: "Agritech Precision System",
+    themeColor: "green",
+    icon: <img src="https://media.licdn.com/dms/image/v2/D4E0BAQF8aFwVyRfGHg/company-logo_200_200/B4EZU33xiUHcAI-/0/1740399123289?e=1767225600&v=beta&t=7D5Lb2mOY1FULswru3tiJqVGinxqcpTCjunP-CToiHI" alt="PEST AI Logo" className="w-full h-full object-cover rounded-lg" />,
+    description: "Une plateforme d’agriculture intelligente combinant IA, PESTFLY (Drones), Satellites et IoT pour réduire les pertes agricoles et optimiser les rendements.",
+    targetAudience: "Agriculteurs, Coopératives, Instituts Agricoles, Agrobusiness",
+    impactStats: [
+      { label: "Pertes Réduites", value: "-40%" },
+      { label: "Intrants Chimiques", value: "-90%" },
+      { label: "Précision", value: "cm²" }
+    ],
+    fullDescription: "PEST AI est une révolution pour l'agriculture africaine. Le projet répond à un enjeu majeur : jusqu’à 40 % des récoltes sont perdues chaque année en Afrique de l’Ouest, faute de diagnostic rapide et d’outils d’aide à la décision fiables.\n\nEn combinant Intelligence Artificielle, PESTFLY (notre flotte de drones autonomes), capteurs IoT et imagerie satellite (PestOrbite), PEST AI offre un écosystème complet : du diagnostic ultra-précis à l'action curative ciblée. Notre solution vise à démocratiser l’accès à l’agriculture de précision.",
+    modules: [
+      {
+        id: "MOD-PESTSCAN",
+        title: "PestScan",
+        subtitle: "Diagnostic Visuel IA",
+        description: "Diagnostic immédiat par IA à partir d'une simple photo de feuille ou de culture.",
+        icon: <Scan />,
+        techTags: ["Computer Vision", "Deep Learning", "Offline First"],
+        fullDescription: "PestScan est le module de diagnostic de première ligne. Il transforme n'importe quel smartphone standard en un laboratoire phytosanitaire de poche. Grâce à un réseau de neurones convolutif (CNN) optimisé pour les processeurs mobiles (NPU), l'analyse se fait localement en moins de 2 secondes, sans nécessiter de connexion internet stable.",
+        architecture: "Le modèle d'IA est entraîné sur un dataset propriétaire de plus de 500,000 images de pathologies tropicales spécifiques à l'Afrique de l'Ouest. Il utilise une architecture MobileNetV3 quantifiée pour une inférence rapide sur les appareils Android bas de gamme.",
+        keyFeatures: [
+          "Détection de 150+ maladies et ravageurs",
+          "Fonctionnement 100% hors-ligne",
+          "Géolocalisation automatique des foyers",
+          "Recommandations de traitement biologiques"
+        ],
+        specs: [
+          { label: "Précision Modèle", value: "94.8% (F1-Score)" },
+          { label: "Temps Inférence", value: "< 200ms" },
+          { label: "Taille App", value: "45 MB" },
+          { label: "Compatibilité", value: "Android 8.0+" }
+        ]
+      },
+      {
+        id: "MOD-PESTSENSE",
+        title: "PestSense",
+        subtitle: "Réseau de Capteurs IoT",
+        description: "Stations météo connectées mesurant humidité, température et pH.",
+        icon: <Wifi />,
+        techTags: ["IoT", "LoRaWAN", "Real-time Telemetry"],
+        fullDescription: "PestSense déploie un maillage de capteurs microclimatiques directement dans les parcelles. Ces sentinelles numériques surveillent 24/7 les conditions critiques (Hygrométrie foliaire, Température du sol, Luminosité) qui favorisent l'apparition des champignons et bactéries.",
+        architecture: "Les nœuds capteurs communiquent via le protocole LoRaWAN (Long Range Low Power), permettant une transmission de données jusqu'à 15km en zone rurale sans carte SIM par capteur. Une passerelle centrale agrège les données et les transmet au cloud Ecliptix.",
+        keyFeatures: [
+          "Autonomie énergétique de 2 ans",
+          "Alertes SMS en temps réel",
+          "Prédiction des risques fongiques",
+          "Mesure pH et Humidité du sol"
+        ],
+        specs: [
+          { label: "Portée Comms", value: "10-15 km (LoRa)" },
+          { label: "Batterie", value: "Li-SOCl2 (3.6V)" },
+          { label: "Intervalle Mesure", value: "Programmable (15m)" },
+          { label: "Résistance", value: "IP67 (Étanche)" }
+        ]
+      },
+      {
+        id: "MOD-PESTFLY",
+        title: "PESTFLY",
+        subtitle: "Drone Pulvérisation & Scan",
+        description: "Drones autonomes pour le scan multispectral et la pulvérisation ciblée (Spot Spraying).",
+        icon: <Crosshair />,
+        techTags: ["Autonomous Drone", "Spot Spraying", "Multispectral"],
+        fullDescription: "PESTFLY est notre unité d'intervention aérienne. Ce n'est pas un simple drone, c'est un robot agricole autonome capable de deux missions : scanner les champs avec des caméras multispectrales pour évaluer la santé des plantes (NDVI), et appliquer des traitements phytosanitaires avec une précision chirurgicale (Spot Spraying).",
+        architecture: "Le drone embarque un contrôleur de vol pixhawk couplé à un ordinateur de bord Jetson Nano pour le traitement d'image en temps réel. Le système de pulvérisation utilise des buses centrifuges à débit variable contrôlées par l'IA.",
+        keyFeatures: [
+          "Pulvérisation à débit variable (VRA)",
+          "Évitement d'obstacles LIDAR",
+          "Retour automatique à la base",
+          "Réduction de 90% des pesticides"
+        ],
+        specs: [
+          { label: "Capacité Réservoir", value: "16 Litres" },
+          { label: "Largeur Spray", value: "4 - 6 mètres" },
+          { label: "Autonomie Vol", value: "25 minutes" },
+          { label: "Couverture", value: "10 Ha / heure" }
+        ]
+      },
+      {
+        id: "MOD-PESTORBITE",
+        title: "PestOrbite",
+        subtitle: "Imagerie Satellitaire",
+        description: "Surveillance macroscopique via satellite et analyse NDVI.",
+        icon: <Satellite />,
+        techTags: ["Satellite Imaging", "NDVI Analysis", "Geospatial"],
+        fullDescription: "PestOrbite offre la vue d'ensemble (\"The Big Picture\"). En exploitant les constellations satellitaires Sentinel-2 et Landsat, nous fournissons une analyse de la vigueur végétative sur de très grandes surfaces, permettant aux coopératives et agro-industriels de prioriser leurs interventions.",
+        architecture: "Notre pipeline de traitement ingère les images brutes, effectue les corrections atmosphériques et calcule les indices de végétation (NDVI, NDRE, EVI). Les anomalies sont ensuite flaggées par notre algorithme de détection de changements temporels.",
+        keyFeatures: [
+          "Historique des parcelles sur 5 ans",
+          "Détection du stress hydrique",
+          "Estimation des rendements",
+          "Mise à jour tous les 5 jours"
+        ],
+        specs: [
+          { label: "Résolution Spatiale", value: "10m / pixel" },
+          { label: "Fréquence Revisit", value: "5 jours" },
+          { label: "Bandes Spectrales", value: "13 bandes" },
+          { label: "API", value: "REST / GeoJSON" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "PROD-LOCAL",
+    title: "LocalPro.AI",
+    subtitle: "SMB Growth Engine",
+    themeColor: "blue",
+    icon: <img src="https://media.licdn.com/dms/image/v2/D4D0BAQEntAyOwWUb0g/company-logo_200_200/B4DZsUpxv2J8AQ-/0/1765578062500?e=1767225600&v=beta&t=Mt_nY4KO_x2cCiynGSOhv_rJUOymanuKLrNxxPytWGo" alt="LocalPro Logo" className="w-full h-full object-cover rounded-lg" />,
+    description: "L'assistant de croissance pour entrepreneurs. Automatisation marketing, CRM simplifié et acquisition client locale.",
+    targetAudience: "Entrepreneurs, Artisans, Freelances, TPE/PME",
+    impactStats: [
+      { label: "Gain de temps", value: "15h / semaine" },
+      { label: "Conversion", value: "+35%" },
+      { label: "Canaux", value: "SMS / WhatsApp / Email" }
+    ],
+    fullDescription: "LocalPro.AI est une plateforme intelligente développée par Ecliptix pour démocratiser la croissance digitale. Pensée pour les réalités africaines, elle rend la prospection et la fidélisation accessibles sans expertise technique.\n\nLa plateforme aide les entrepreneurs à trouver des clients locaux via un ciblage précis, à automatiser leurs campagnes de relance marketing sur les canaux les plus utilisés (WhatsApp, SMS) et à gérer leurs prospects via un mini CRM ultra-intuitif.",
+    modules: [
+      {
+        id: "MOD-AUTOMKT",
+        title: "Auto-Marketing",
+        subtitle: "Campagnes Automatisées",
+        description: "Créez et diffusez des campagnes marketing sur WhatsApp, SMS et Email.",
+        icon: <MessageSquare />,
+        techTags: ["Generative AI", "WhatsApp API", "Automation"],
+        fullDescription: "Le module Auto-Marketing est votre département marketing virtuel. Il permet de créer, planifier et diffuser des campagnes promotionnelles sur les canaux qui comptent vraiment en Afrique : WhatsApp et SMS. L'IA générative intégrée rédige pour vous des messages accrocheurs et personnalisés.",
+        architecture: "Le système repose sur un moteur de templates dynamique couplé à l'API WhatsApp Business officielle et des agrégateurs SMS locaux. Un modèle de langage (LLM) fine-tuné sur le copywriting commercial suggère les textes.",
+        keyFeatures: [
+          "Générateur de texte par IA",
+          "Séquences de relance automatiques",
+          "Statistiques d'ouverture en temps réel",
+          "Respect des quotas anti-spam"
+        ],
+        specs: [
+          { label: "Débit Envoi", value: "100 msg / sec" },
+          { label: "Canaux", value: "WhatsApp, SMS, Email" },
+          { label: "Personnalisation", value: "Variables Dynamiques" },
+          { label: "Conformité", value: "RGPD / local data" }
+        ]
+      },
+      {
+        id: "MOD-CRM",
+        title: "Mini CRM",
+        subtitle: "Gestion Client Simplifiée",
+        description: "Centralisez vos contacts et suivez l'état de vos devis.",
+        icon: <PieChart />,
+        techTags: ["Contact Management", "Deal Pipeline", "Analytics"],
+        fullDescription: "Fini les carnets de notes perdus et les fichiers Excel illisibles. Le Mini CRM de LocalPro est conçu pour la mobilité. Il centralise toutes vos interactions clients, vos devis et vos factures dans une interface ultra-simple. Vous savez toujours qui rappeler et quand.",
+        architecture: "Base de données relationnelle distribuée avec synchronisation offline-first (PouchDB/CouchDB). L'interface utilisateur est optimisée pour les écrans tactiles et les connexions à faible bande passante.",
+        keyFeatures: [
+          "Pipeline de vente visuel (Kanban)",
+          "Importation contacts téléphone",
+          "Génération de devis PDF",
+          "Historique des interactions"
+        ],
+        specs: [
+          { label: "Capacité", value: "Illimité" },
+          { label: "Export", value: "CSV / Excel / PDF" },
+          { label: "Sécurité", value: "Chiffrement AES-256" },
+          { label: "Backup", value: "Cloud Auto" }
+        ]
+      },
+      {
+        id: "MOD-BOOST",
+        title: "Local Boost",
+        subtitle: "Acquisition Géolocalisée",
+        description: "Trouvez des clients potentiels dans votre zone géographique précise.",
+        icon: <Plane />,
+        techTags: ["Geolocation", "Audience Targeting", "Lead Gen"],
+        fullDescription: "Local Boost est un moteur de recherche de prospects (Lead Generation) ultra-puissant. Il scanne les données publiques et les réseaux sociaux pour identifier des clients potentiels dans votre zone de chalandise qui correspondent à votre activité.",
+        architecture: "Nos crawlers indexent des millions de points d'intérêt (POI) et d'activités commerciales. Un algorithme de matching géospatial croise votre offre avec la demande locale détectée.",
+        keyFeatures: [
+          "Carte interactive des prospects",
+          "Filtrage par secteur d'activité",
+          "Enrichissement des données (Tel, Email)",
+          "Score de pertinence IA"
+        ],
+        specs: [
+          { label: "Rayon Scan", value: "1 à 50 km" },
+          { label: "Sources", value: "GMaps, Social, Web" },
+          { label: "Mise à jour", value: "Hebdomadaire" },
+          { label: "Précision", value: "Coordonnées GPS" }
+        ]
+      }
+    ]
+  }
+];
+
+interface HubProps {
+  onProductClick: (product: ProductItem) => void;
+  onBack?: () => void;
+  isSection?: boolean;
+}
+
+export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = false }) => {
+  const pestAI = productsData[0];
+  const localPro = productsData[1];
+
+  const Container = isSection ? 'section' : 'div';
+  const containerClasses = isSection 
+    ? "py-16 md:py-32 relative border-t border-white/10" 
+    : "min-h-screen pt-24 pb-20 px-4 sm:px-6 relative z-10 animate-[fadeIn_0.5s_ease-in-out]";
+
+  return (
+    <Container id={isSection ? "hub" : undefined} className={containerClasses}>
+      
+      {/* Background Ambience - Only for standalone page to avoid conflict with stars */}
+      {!isSection && (
+        <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-[20%] right-[-10%] w-[800px] h-[800px] bg-green-900/10 rounded-full blur-[100px]"></div>
+          <div className="absolute bottom-[10%] left-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[100px]"></div>
+        </div>
+      )}
+
+      {isSection && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+           <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-ecliptix-orange/5 rounded-full blur-[100px]"></div>
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
+        
+        {/* Navigation only for standalone */}
+        {!isSection && onBack && (
+          <button 
+            onClick={onBack}
+            className="group flex items-center gap-2 text-slate-400 hover:text-ecliptix-orange transition-colors font-mono text-xs uppercase tracking-widest mb-12"
+          >
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+            Retour au QG
+          </button>
+        )}
+
+        {/* Section Header */}
+        <div className="text-center mb-16 md:mb-24">
+           <div className="inline-flex items-center gap-2 border border-white/20 px-4 py-1 rounded-full bg-white/5 backdrop-blur-md mb-6 animate-pulse-slow">
+             <FlaskConical size={14} className="text-ecliptix-orange" />
+             <span className="text-[10px] font-mono text-ecliptix-orange uppercase tracking-[0.3em]">Innovation Lab</span>
+           </div>
+           <h1 className={`${isSection ? 'text-3xl md:text-5xl' : 'text-4xl md:text-6xl'} font-bold text-white mb-6`}>Ecliptix <span className="text-transparent bg-clip-text bg-gradient-to-r from-ecliptix-orange to-white">Hub</span></h1>
+           <p className="text-slate-400 max-w-2xl mx-auto font-light text-base md:text-lg">
+             Le laboratoire où le futur prend forme. Découvrez nos solutions propriétaires déployées sur le terrain, combinant l'IA de pointe aux réalités concrètes de l'Afrique.
+           </p>
+        </div>
+
+        {/* PEST AI CARD */}
+        <div className="mb-16 md:mb-32 cursor-pointer group" onClick={() => onProductClick(pestAI)}>
+          <div className="relative bg-slate-900/60 border border-green-500/30 rounded-3xl overflow-hidden backdrop-blur-sm hover:border-green-500/60 transition-colors duration-500 hover:shadow-[0_0_50px_rgba(34,197,94,0.1)]">
+            {/* Header Product */}
+            <div className="p-6 md:p-12 border-b border-green-500/20 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between bg-green-950/20 group-hover:bg-green-950/30 transition-colors">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6 w-full md:w-auto">
+                {/* INCREASED LOGO SIZE HERE */}
+                <div className="w-24 h-24 md:w-40 md:h-40 rounded-2xl bg-green-900/30 border border-green-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(34,197,94,0.2)] group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
+                  <img 
+                    src="https://media.licdn.com/dms/image/v2/D4E0BAQF8aFwVyRfGHg/company-logo_200_200/B4EZU33xiUHcAI-/0/1740399123289?e=1767225600&v=beta&t=7D5Lb2mOY1FULswru3tiJqVGinxqcpTCjunP-CToiHI" 
+                    alt="PEST AI Logo" 
+                    className="w-full h-full object-cover" 
+                  />
+                </div>
+                <div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-white font-mono tracking-tight">{pestAI.title}</h3>
+                  <p className="text-green-400 font-mono text-xs md:text-sm uppercase tracking-widest mt-2">:: {pestAI.subtitle} ::</p>
+                </div>
+              </div>
+              <div className="text-left md:text-right max-w-lg">
+                <p className="text-slate-300 text-sm leading-relaxed">
+                  {pestAI.description}
+                </p>
+              </div>
+            </div>
+
+            {/* Preview Modules - 2x2 Grid for 4 modules */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-green-500/20 border-t border-green-500/20">
+              {pestAI.modules.map((mod, idx) => (
+                <div key={idx} className="p-6 md:p-8 bg-slate-900/60 hover:bg-green-500/10 transition-colors h-full">
+                  <div className="flex items-center gap-3 mb-4 text-green-400">
+                    {React.cloneElement(mod.icon as React.ReactElement<any>, { size: 20 })}
+                    <h4 className="font-bold uppercase tracking-wider text-sm">{mod.title}</h4>
+                  </div>
+                  <p className="text-slate-400 text-xs line-clamp-3 leading-relaxed">
+                    {mod.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+            
+            <div className="p-4 bg-green-950/30 border-t border-green-500/20 text-center group-hover:bg-green-500/20 transition-colors">
+              <button className="text-xs font-mono text-green-400 group-hover:text-white uppercase tracking-widest flex items-center justify-center gap-2 transition-colors">
+                Explorer la solution <ArrowRight size={12} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        {/* LOCALPRO.AI CARD */}
+        <div className="cursor-pointer group" onClick={() => onProductClick(localPro)}>
+          <div className="relative bg-slate-900/60 border border-blue-500/30 rounded-3xl overflow-hidden backdrop-blur-sm hover:border-blue-500/60 transition-colors duration-500 hover:shadow-[0_0_50px_rgba(59,130,246,0.1)]">
+            {/* Header Product */}
+            <div className="p-6 md:p-12 border-b border-blue-500/20 flex flex-col md:flex-row-reverse gap-8 items-start md:items-center justify-between bg-blue-950/20 group-hover:bg-blue-950/30 transition-colors">
+              <div className="flex flex-col-reverse md:flex-row items-start md:items-center gap-6 w-full md:w-auto">
+                <div className="text-left md:text-right">
+                  <h3 className="text-3xl font-bold text-white font-mono tracking-tight">{localPro.title}</h3>
+                  <p className="text-blue-400 font-mono text-xs uppercase tracking-widest mt-1">:: {localPro.subtitle} ::</p>
+                </div>
+                {/* INCREASED LOGO SIZE FOR LOCALPRO */}
+                <div className="w-24 h-24 md:w-40 md:h-40 rounded-2xl bg-blue-900/30 border border-blue-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.2)] group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
+                  <img 
+                    src="https://media.licdn.com/dms/image/v2/D4D0BAQEntAyOwWUb0g/company-logo_200_200/B4DZsUpxv2J8AQ-/0/1765578062500?e=1767225600&v=beta&t=Mt_nY4KO_x2cCiynGSOhv_rJUOymanuKLrNxxPytWGo" 
+                    alt="LocalPro Logo" 
+                    className="w-full h-full object-cover" 
+                  />
+                </div>
+              </div>
+              <div className="text-left max-w-lg">
+                <p className="text-slate-300 text-sm leading-relaxed">
+                  {localPro.description}
+                </p>
+              </div>
+            </div>
+
+            {/* Preview Modules - 3 Columns for 3 modules */}
+            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-blue-500/20">
+              {localPro.modules.map((mod, idx) => (
+                <div key={idx} className="p-6 md:p-8 hover:bg-blue-500/5 transition-colors">
+                  <div className="flex items-center gap-3 mb-4 text-blue-400">
+                    {React.cloneElement(mod.icon as React.ReactElement<any>, { size: 20 })}
+                    <h4 className="font-bold uppercase tracking-wider text-sm">{mod.title}</h4>
+                  </div>
+                  <p className="text-slate-400 text-xs line-clamp-3 leading-relaxed">
+                    {mod.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+            
+             <div className="p-4 bg-blue-950/30 border-t border-blue-500/20 text-center group-hover:bg-blue-500/20 transition-colors">
+              <button className="text-xs font-mono text-blue-400 group-hover:text-white uppercase tracking-widest flex items-center justify-center gap-2 transition-colors">
+                Déployer maintenant <ArrowRight size={12} />
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </Container>
+  );
+};
