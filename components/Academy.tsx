@@ -2,9 +2,8 @@
 import React, { useState } from 'react';
 import { GraduationCap, Code2, Database, Plane, Cpu, ArrowRight, BrainCircuit, Terminal, Layers, Network, FileCode, Container, Server, Globe, Bot, Eye, BarChart3, Smartphone, PieChart, Cloud, Wifi, Lock, ShieldCheck, HardDrive, GitMerge, Megaphone, Heart, Image, Users, MessageCircle, Sparkles, Zap } from 'lucide-react';
 import { Course } from '../types';
-import { CourseDetail } from './CourseDetail';
 
-const courses: Course[] = [
+export const courses: Course[] = [
   {
     id: "FOUNDATION-PY",
     title: "Python & AI Foundations",
@@ -352,16 +351,6 @@ interface AcademyProps {
 }
 
 export const Academy: React.FC<AcademyProps> = ({ onRegister }) => {
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-
-  if (selectedCourse) {
-    return <CourseDetail 
-      course={selectedCourse} 
-      onBack={() => setSelectedCourse(null)} 
-      onRegister={(course) => onRegister ? onRegister(course) : null}
-    />;
-  }
-
   return (
     <section className="min-h-screen pt-24 pb-20 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -410,7 +399,7 @@ export const Academy: React.FC<AcademyProps> = ({ onRegister }) => {
            {courses.map((course) => (
               <div 
                 key={course.id} 
-                onClick={() => setSelectedCourse(course)}
+                onClick={() => window.location.hash = `#/academy/course/${course.id}`}
                 className="group relative bg-slate-900/50 border border-white/10 rounded-3xl overflow-hidden hover:border-purple-500/50 transition-all cursor-pointer flex flex-col hover:shadow-[0_0_30px_rgba(168,85,247,0.1)]"
               >
                  {/* Top Decoration */}

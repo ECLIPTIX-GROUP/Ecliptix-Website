@@ -2,9 +2,8 @@
 import React, { useState } from 'react';
 import { Rocket, Users, Handshake, ChevronRight, Briefcase, MapPin, Send, UploadCloud, Cpu, Layout, Globe, Shield } from 'lucide-react';
 import { JobPosting } from '../types';
-import { JobDetail } from './JobDetail';
 
-const jobs: JobPosting[] = [
+export const jobs: JobPosting[] = [
   {
     id: "JOB-SCRUM",
     title: "Scrum Master",
@@ -236,11 +235,6 @@ interface CareersProps {
 
 export const Careers: React.FC<CareersProps> = ({ onJobApply, onSpontaneousApply, onPartnerRequest }) => {
   const [activeTab, setActiveTab] = useState<'jobs' | 'partners'>('jobs');
-  const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
-
-  if (selectedJob) {
-    return <JobDetail job={selectedJob} onBack={() => setSelectedJob(null)} onApply={(job) => onJobApply?.(job)} />;
-  }
 
   return (
     <section id="careers" className="py-32 relative z-10">
@@ -283,7 +277,7 @@ export const Careers: React.FC<CareersProps> = ({ onJobApply, onSpontaneousApply
               {jobs.map((job) => (
                 <div 
                   key={job.id} 
-                  onClick={() => setSelectedJob(job)}
+                  onClick={() => window.location.hash = `#/careers/job/${job.id}`}
                   className="group relative bg-slate-900/40 border border-white/10 p-6 hover:border-ecliptix-orange/50 transition-all cursor-pointer overflow-hidden rounded-lg"
                 >
                   <div className="absolute top-0 left-0 w-1 h-full bg-ecliptix-orange transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>

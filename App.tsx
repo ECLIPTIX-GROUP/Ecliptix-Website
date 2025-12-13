@@ -3,21 +3,21 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Logo } from './components/Logo';
 import { Hero } from './components/Hero';
 import { Features } from './components/Features';
-import { Services } from './components/Services';
-import { Hub } from './components/Hub';
+import { Services, servicesData } from './components/Services';
+import { Hub, productsData } from './components/Hub';
 import { About } from './components/About';
 import { Contact } from './components/Contact';
-import { Careers } from './components/Careers';
-import { Process } from './components/Process';
+import { Careers, jobs } from './components/Careers';
+import { Process, processSteps } from './components/Process';
 import { ServiceDetail } from './components/ServiceDetail';
 import { ProductDetail } from './components/ProductDetail';
 import { ModuleDetail } from './components/ModuleDetail';
-import { Journal } from './components/Journal';
+import { Journal, logs } from './components/Journal';
 import { Partners } from './components/Partners';
 import { Team } from './components/Team';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { TermsOfService } from './components/TermsOfService';
-import { Academy } from './components/Academy';
+import { Academy, courses } from './components/Academy';
 import { AcademyPreview } from './components/AcademyPreview';
 import { DemoRequest } from './components/DemoRequest';
 import { JobApplication } from './components/JobApplication';
@@ -31,9 +31,11 @@ import { SwarmIntelligence } from './components/SwarmIntelligence';
 import { ZeroKnowledge } from './components/ZeroKnowledge';
 import { Newsletter } from './components/Newsletter';
 import { ProcessDetail } from './components/ProcessDetail';
-import { Facebook, Linkedin, Menu, X, Radio, Send, CheckCircle2, Loader2, Mail } from 'lucide-react';
-import { ServiceItem, ProductItem, ProductModule, JobPosting, Course, ProcessStep } from './types';
-import { submitForm } from './utils/formService';
+import { LogDetail } from './components/LogDetail';
+import { CourseDetail } from './components/CourseDetail';
+import { JobDetail } from './components/JobDetail';
+import { Facebook, Linkedin, Menu, X } from 'lucide-react';
+import { ServiceItem, ProductItem, ProductModule, JobPosting, Course, ProcessStep, LogEntry } from './types';
 
 // Star generator component
 const StarField = () => {
@@ -75,7 +77,7 @@ const StarField = () => {
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeNav, setActiveNav] = useState<string>(''); // Tracks the active navigation item
+  const [activeNav, setActiveNav] = useState<string>('');
 
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
@@ -87,6 +89,7 @@ export default function App() {
   const [showPartnershipRequest, setShowPartnershipRequest] = useState(false);
   const [showSuccessPage, setShowSuccessPage] = useState(false);
   
+  // Page States
   const [showCareers, setShowCareers] = useState(false);
   const [showJournal, setShowJournal] = useState(false);
   const [showTeam, setShowTeam] = useState(false);
@@ -94,6 +97,11 @@ export default function App() {
   const [showTerms, setShowTerms] = useState(false);
   const [showAcademy, setShowAcademy] = useState(false);
   const [showHub, setShowHub] = useState(false);
+  
+  // Detail States (New)
+  const [selectedLog, setSelectedLog] = useState<LogEntry | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
   
   // Tech pages state
   const [showNeural, setShowNeural] = useState(false);
@@ -124,73 +132,147 @@ export default function App() {
     setShowDeep(false);
     setShowSwarm(false);
     setShowZero(false);
+    setSelectedLog(null);
+    setSelectedCourse(null);
+    setSelectedJob(null);
     setMobileMenuOpen(false);
   };
 
-  const scrollToSection = (id: string) => {
-    resetAllViews();
-    setActiveNav(id);
-    setTimeout(() => {
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+  // --- ROUTER LOGIC ---
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      
+      // Default / Landing
+      if (!hash || hash === '#/') {
+        resetAllViews();
+        setActiveNav('');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
       }
-    }, 100);
+
+      // Sections
+      if (hash.startsWith('#/section/')) {
+        const section = hash.split('/')[2];
+        resetAllViews();
+        setActiveNav(section);
+        setTimeout(() => {
+          const element = document.getElementById(section);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+        return;
+      }
+
+      resetAllViews(); // Clear previous view before setting new one
+
+      // Pages & Details
+      if (hash === '#/academy') {
+        setShowAcademy(true);
+        setActiveNav('academy');
+      } else if (hash.startsWith('#/academy/course/')) {
+        const id = hash.split('/')[3];
+        const course = courses.find(c => c.id === id);
+        if (course) setSelectedCourse(course);
+      } else if (hash === '#/journal') {
+        setShowJournal(true);
+        setActiveNav('journal');
+      } else if (hash.startsWith('#/journal/log/')) {
+        const id = hash.split('/')[3];
+        const log = logs.find(l => l.id === id);
+        if (log) setSelectedLog(log);
+      } else if (hash === '#/careers') {
+        setShowCareers(true);
+        setActiveNav('careers');
+      } else if (hash.startsWith('#/careers/job/')) {
+        const id = hash.split('/')[3];
+        const job = jobs.find(j => j.id === id);
+        if (job) setSelectedJob(job);
+      } else if (hash === '#/hub') {
+        setShowHub(true);
+        setActiveNav('hub');
+      } else if (hash.startsWith('#/product/')) {
+        const id = hash.split('/')[2];
+        const product = productsData.find(p => p.id === id);
+        if (product) setSelectedProduct(product);
+      } else if (hash.startsWith('#/service/')) {
+        const id = hash.split('/')[2];
+        const service = servicesData.find(s => s.id === id);
+        if (service) setSelectedService(service);
+      } else if (hash === '#/team') {
+        setShowTeam(true);
+        setActiveNav('team');
+      } else if (hash === '#/privacy') {
+        setShowPrivacy(true);
+      } else if (hash === '#/terms') {
+        setShowTerms(true);
+      } else if (hash === '#/tech/neural') {
+        setShowNeural(true);
+      } else if (hash === '#/tech/quantum') {
+        setShowQuantum(true);
+      } else if (hash === '#/tech/deep') {
+        setShowDeep(true);
+      } else if (hash === '#/tech/swarm') {
+        setShowSwarm(true);
+      } else if (hash === '#/tech/zero') {
+        setShowZero(true);
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    
+    // Trigger initial load if hash exists
+    if (window.location.hash) {
+      handleHashChange();
+    }
+
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    window.location.hash = `#/section/${id}`;
   };
 
-  const handleServiceClick = (service: ServiceItem) => {
-    resetAllViews();
-    setSelectedService(service);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleProductClick = (product: ProductItem) => {
-    resetAllViews();
-    setSelectedProduct(product);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleModuleClick = (module: ProductModule) => {
-    setSelectedModule(module);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleProcessStepClick = (step: ProcessStep) => {
-    setSelectedProcessStep(step);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleBackToOrbit = () => {
+    window.location.hash = '#/';
   };
 
   const handleBackToProduct = () => {
-    setSelectedModule(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (selectedProduct) {
+       // Since module detail is overlay on product detail conceptually in router? 
+       // Actually module detail is sub-view. If we want link for module, we need #/module/...
+       // For now, simpler to just close module state if we didn't add deep link for modules yet.
+       setSelectedModule(null);
+    } else {
+       window.location.hash = '#/hub';
+    }
   };
 
   const handleRequestDemo = (product: ProductItem) => {
     setDemoRequestProduct(product);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleJobApplication = (job: JobPosting) => {
     setApplyingJob(job);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSpontaneousApplication = () => {
     setApplyingJob('spontaneous');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCourseRegistration = (course: Course) => {
     setRegisteringCourse(course);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePartnershipRequest = () => {
     setShowPartnershipRequest(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSubmitSuccess = () => {
+    // We keep success page local state to not pollute history or make it shareable
     setDemoRequestProduct(null);
     setApplyingJob(null);
     setRegisteringCourse(null);
@@ -198,36 +280,6 @@ export default function App() {
     setShowSuccessPage(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  const handleBackToOrbit = () => {
-    resetAllViews();
-    setActiveNav('services'); // Default return state
-    setTimeout(() => {
-        const element = document.getElementById('services');
-        if (element) element.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
-  
-  // Generic Handlers
-  const handleOpenCareers = () => { resetAllViews(); setShowCareers(true); setActiveNav('careers'); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenJournal = () => { resetAllViews(); setShowJournal(true); setActiveNav('journal'); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenTeam = () => { resetAllViews(); setShowTeam(true); setActiveNav('team'); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenPrivacy = () => { resetAllViews(); setShowPrivacy(true); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenTerms = () => { resetAllViews(); setShowTerms(true); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenAcademy = () => { resetAllViews(); setShowAcademy(true); setActiveNav('academy'); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenHub = () => { resetAllViews(); setShowHub(true); setActiveNav('hub'); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  
-  const handleOpenNeural = () => { resetAllViews(); setShowNeural(true); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenQuantum = () => { resetAllViews(); setShowQuantum(true); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenDeep = () => { resetAllViews(); setShowDeep(true); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenSwarm = () => { resetAllViews(); setShowSwarm(true); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const handleOpenZero = () => { resetAllViews(); setShowZero(true); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-
-  // Initial scroll effect for active state if needed (optional)
-  useEffect(() => {
-    // If we wanted to spy on scroll, we would do it here. 
-    // For now, we rely on click-setting the activeNav.
-  }, []);
 
   return (
     <div className="min-h-screen flex flex-col font-sans text-white bg-black selection:bg-ecliptix-orange selection:text-black">
@@ -238,11 +290,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             
-            <div className="flex items-center gap-4 cursor-pointer" onClick={() => { 
-                resetAllViews();
-                setActiveNav('');
-                window.scrollTo({ top: 0, behavior: 'smooth'}) 
-              }}>
+            <div className="flex items-center gap-4 cursor-pointer" onClick={() => window.location.hash = '#/'}>
               <Logo />
               <div className="hidden md:flex h-4 w-px bg-white/20 mx-2"></div>
               <span className="hidden md:block text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase">
@@ -251,66 +299,31 @@ export default function App() {
             </div>
             
             <div className="hidden md:flex items-center space-x-1">
-              
-              {/* INNOVATION HUB */}
-              <button 
-                onClick={() => scrollToSection('hub')} 
-                className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'hub' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
-              >
+              <button onClick={() => scrollToSection('hub')} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'hub' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
                  <span className="relative z-10">Innovation Hub</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'hub' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-
-              {/* SERVICES */}
-              <button 
-                onClick={() => scrollToSection('services')} 
-                className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'services' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
-              >
+              <button onClick={() => scrollToSection('services')} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'services' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
                  <span className="relative z-10">Services</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'services' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-
-              {/* ACADEMY */}
-              <button 
-                onClick={handleOpenAcademy} 
-                className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'academy' ? 'text-purple-400' : 'text-slate-400 hover:text-purple-400'}`}
-              >
+              <button onClick={() => window.location.hash = '#/academy'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'academy' ? 'text-purple-400' : 'text-slate-400 hover:text-purple-400'}`}>
                  <span className="relative z-10">Academy</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-purple-500 transform transition-transform origin-right duration-500 ${activeNav === 'academy' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-
-              {/* MISSION */}
-              <button 
-                onClick={() => scrollToSection('about')} 
-                className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'about' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
-              >
+              <button onClick={() => scrollToSection('about')} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'about' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
                  <span className="relative z-10">Mission</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'about' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-
-              {/* JOURNAL */}
-              <button 
-                onClick={handleOpenJournal} 
-                className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'journal' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
-              >
+              <button onClick={() => window.location.hash = '#/journal'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'journal' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
                  <span className="relative z-10">Journal</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'journal' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-              
-              {/* TEAM */}
-              <button 
-                onClick={handleOpenTeam} 
-                className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'team' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
-              >
+              <button onClick={() => window.location.hash = '#/team'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'team' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
                  <span className="relative z-10">Team</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'team' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-              
-              {/* CAREERS */}
-              <button 
-                onClick={handleOpenCareers} 
-                className={`relative px-6 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors border rounded ml-2 ${activeNav === 'careers' ? 'bg-ecliptix-orange text-black border-ecliptix-orange' : 'text-ecliptix-orange hover:text-white border-ecliptix-orange/30 hover:bg-ecliptix-orange/10'}`}
-              >
+              <button onClick={() => window.location.hash = '#/careers'} className={`relative px-6 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors border rounded ml-2 ${activeNav === 'careers' ? 'bg-ecliptix-orange text-black border-ecliptix-orange' : 'text-ecliptix-orange hover:text-white border-ecliptix-orange/30 hover:bg-ecliptix-orange/10'}`}>
                 Carrière
               </button>
             </div>
@@ -326,45 +339,14 @@ export default function App() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-black/95 border-b border-white/10 absolute w-full backdrop-blur-xl">
             <div className="px-4 pt-4 pb-8 space-y-4 font-mono text-sm uppercase">
-              <button 
-                onClick={() => scrollToSection('hub')} 
-                className={`block w-full text-left px-4 py-3 border-l-2 transition-all ${activeNav === 'hub' ? 'border-ecliptix-orange bg-white/10 text-white' : 'border-transparent text-slate-400 hover:text-white hover:bg-white/5'}`}
-              >Innovation Hub</button>
-              
-              <button 
-                onClick={() => scrollToSection('services')} 
-                className={`block w-full text-left px-4 py-3 border-l-2 transition-all ${activeNav === 'services' ? 'border-ecliptix-orange bg-white/10 text-white' : 'border-transparent text-slate-400 hover:text-white hover:bg-white/5'}`}
-              >Services</button>
-              
-              <button 
-                onClick={handleOpenAcademy} 
-                className={`block w-full text-left px-4 py-3 border-l-2 transition-all ${activeNav === 'academy' ? 'border-purple-400 bg-purple-900/20 text-purple-400' : 'border-transparent text-purple-400 hover:bg-white/5'}`}
-              >Academy</button>
-              
-              <button 
-                onClick={() => scrollToSection('about')} 
-                className={`block w-full text-left px-4 py-3 border-l-2 transition-all ${activeNav === 'about' ? 'border-ecliptix-orange bg-white/10 text-white' : 'border-transparent text-slate-400 hover:text-white hover:bg-white/5'}`}
-              >Mission</button>
-              
-              <button 
-                onClick={handleOpenJournal} 
-                className={`block w-full text-left px-4 py-3 border-l-2 transition-all ${activeNav === 'journal' ? 'border-ecliptix-orange bg-white/10 text-white' : 'border-transparent text-slate-400 hover:text-white hover:bg-white/5'}`}
-              >Journal de Bord</button>
-              
-              <button 
-                onClick={handleOpenTeam} 
-                className={`block w-full text-left px-4 py-3 border-l-2 transition-all ${activeNav === 'team' ? 'border-ecliptix-orange bg-white/10 text-white' : 'border-transparent text-slate-400 hover:text-white hover:bg-white/5'}`}
-              >Équipe</button>
-              
-              <button 
-                onClick={handleOpenCareers} 
-                className={`block w-full text-left px-4 py-3 border-l-2 transition-all ${activeNav === 'careers' ? 'border-ecliptix-orange bg-ecliptix-orange text-black' : 'border-transparent text-ecliptix-orange hover:bg-white/5'}`}
-              >Carrière</button>
-              
-              <button 
-                onClick={() => scrollToSection('contact')} 
-                className={`block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-500 hover:text-white hover:bg-white/5 transition-all`}
-              >Comm Link</button>
+              <button onClick={() => scrollToSection('hub')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Innovation Hub</button>
+              <button onClick={() => scrollToSection('services')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Services</button>
+              <button onClick={() => window.location.hash = '#/academy'} className="block w-full text-left px-4 py-3 border-l-2 border-purple-400 text-purple-400 hover:bg-white/5">Academy</button>
+              <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Mission</button>
+              <button onClick={() => window.location.hash = '#/journal'} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Journal</button>
+              <button onClick={() => window.location.hash = '#/team'} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Team</button>
+              <button onClick={() => window.location.hash = '#/careers'} className="block w-full text-left px-4 py-3 border-l-2 border-ecliptix-orange text-ecliptix-orange hover:bg-white/5">Carrière</button>
+              <button onClick={() => scrollToSection('contact')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-500 hover:text-white hover:bg-white/5">Comm Link</button>
             </div>
           </div>
         )}
@@ -411,13 +393,30 @@ export default function App() {
           <ProductDetail 
             product={selectedProduct} 
             onBack={handleBackToOrbit} 
-            onModuleClick={handleModuleClick}
+            onModuleClick={(module) => setSelectedModule(module)}
             onRequestDemo={handleRequestDemo}
           />
         ) : selectedProcessStep ? (
           <ProcessDetail 
             step={selectedProcessStep}
             onBack={() => setSelectedProcessStep(null)}
+          />
+        ) : selectedCourse ? (
+          <CourseDetail 
+            course={selectedCourse} 
+            onBack={() => window.location.hash = '#/academy'} 
+            onRegister={handleCourseRegistration}
+          />
+        ) : selectedJob ? (
+          <JobDetail 
+            job={selectedJob} 
+            onBack={() => window.location.hash = '#/careers'} 
+            onApply={handleJobApplication} 
+          />
+        ) : selectedLog ? (
+          <LogDetail 
+            entry={selectedLog} 
+            onBack={() => window.location.hash = '#/journal'} 
           />
         ) : showCareers ? (
           <Careers 
@@ -438,7 +437,7 @@ export default function App() {
              onRegister={handleCourseRegistration}
           />
          ) : showHub ? (
-          <Hub onProductClick={handleProductClick} onBack={handleBackToOrbit} />
+          <Hub onProductClick={(p) => window.location.hash = `#/product/${p.id}`} onBack={handleBackToOrbit} />
         ) : showNeural ? (
           <NeuralMapping onBack={handleBackToOrbit} />
         ) : showQuantum ? (
@@ -451,12 +450,12 @@ export default function App() {
           <ZeroKnowledge onBack={handleBackToOrbit} />
         ) : (
           <>
-            <Hero onDiscover={() => scrollToSection('services')} onOpenJournal={handleOpenJournal} />
+            <Hero onDiscover={() => scrollToSection('services')} onOpenJournal={() => window.location.hash = '#/journal'} />
             <About />
-            <Process onStepClick={handleProcessStepClick} />
-            <Hub onProductClick={handleProductClick} isSection={true} />
-            <Services onServiceClick={handleServiceClick} />
-            <AcademyPreview onOpen={handleOpenAcademy} />
+            <Process onStepClick={setSelectedProcessStep} />
+            <Hub onProductClick={(p) => window.location.hash = `#/product/${p.id}`} isSection={true} />
+            <Services onServiceClick={(s) => window.location.hash = `#/service/${s.id}`} />
+            <AcademyPreview onOpen={() => window.location.hash = '#/academy'} />
             <Features />
             <Partners onBecomePartner={handlePartnershipRequest} />
             <Contact onSubmitSuccess={handleSubmitSuccess} />
@@ -464,7 +463,6 @@ export default function App() {
         )}
       </main>
 
-      {/* DEDICATED NEWSLETTER SECTION */}
       <Newsletter />
 
       <footer className="bg-black border-t border-white/10 pt-20 pb-10 relative print:hidden">
@@ -482,21 +480,21 @@ export default function App() {
             <div>
               <h4 className="text-white font-mono font-bold uppercase tracking-widest text-xs mb-6 border-b border-white/10 pb-2 inline-block">Protocols</h4>
               <ul className="space-y-3 text-sm text-slate-500">
-                <li onClick={handleOpenNeural} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Neural Mapping</li>
-                <li onClick={handleOpenQuantum} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Quantum Encryption</li>
-                <li onClick={handleOpenDeep} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Deep Learning</li>
-                <li onClick={handleOpenSwarm} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Swarm Intelligence</li>
-                <li onClick={handleOpenZero} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Zero-Knowledge</li>
+                <li onClick={() => window.location.hash = '#/tech/neural'} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Neural Mapping</li>
+                <li onClick={() => window.location.hash = '#/tech/quantum'} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Quantum Encryption</li>
+                <li onClick={() => window.location.hash = '#/tech/deep'} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Deep Learning</li>
+                <li onClick={() => window.location.hash = '#/tech/swarm'} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Swarm Intelligence</li>
+                <li onClick={() => window.location.hash = '#/tech/zero'} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Zero-Knowledge</li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-white font-mono font-bold uppercase tracking-widest text-xs mb-6 border-b border-white/10 pb-2 inline-block">Base Info</h4>
               <ul className="space-y-3 text-sm text-slate-500">
-                <li onClick={handleOpenAcademy} className="hover:text-purple-400 cursor-pointer transition-colors text-purple-400 font-bold">Ecliptix Academy</li>
-                <li onClick={handleOpenCareers} className="hover:text-ecliptix-orange cursor-pointer transition-colors text-ecliptix-orange/80 font-bold">Rejoindre l'équipe</li>
-                <li onClick={handleOpenTeam} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Information Société</li>
-                <li onClick={handleOpenJournal} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Journal de Mission</li>
+                <li onClick={() => window.location.hash = '#/academy'} className="hover:text-purple-400 cursor-pointer transition-colors text-purple-400 font-bold">Ecliptix Academy</li>
+                <li onClick={() => window.location.hash = '#/careers'} className="hover:text-ecliptix-orange cursor-pointer transition-colors text-ecliptix-orange/80 font-bold">Rejoindre l'équipe</li>
+                <li onClick={() => window.location.hash = '#/team'} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Information Société</li>
+                <li onClick={() => window.location.hash = '#/journal'} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Journal de Mission</li>
               </ul>
             </div>
 
@@ -513,8 +511,8 @@ export default function App() {
           <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] font-mono text-slate-600 uppercase tracking-widest">
             <p>ECLIPTIX SYSTEMS CORP // EST. 2025</p>
             <div className="flex gap-6 mt-4 md:mt-0">
-               <button onClick={handleOpenPrivacy} className="hover:text-white transition-colors uppercase">Privacy Protocol</button>
-               <button onClick={handleOpenTerms} className="hover:text-white transition-colors uppercase">Terms of Engagement</button>
+               <button onClick={() => window.location.hash = '#/privacy'} className="hover:text-white transition-colors uppercase">Privacy Protocol</button>
+               <button onClick={() => window.location.hash = '#/terms'} className="hover:text-white transition-colors uppercase">Terms of Engagement</button>
             </div>
           </div>
         </div>

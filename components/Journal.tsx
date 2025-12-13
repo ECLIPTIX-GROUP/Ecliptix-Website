@@ -1,11 +1,10 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Calendar, Clock, ArrowRight, ChevronLeft, Hash, Tag } from 'lucide-react';
 import { LogEntry } from '../types';
-import { LogDetail } from './LogDetail';
 
 // Content data with HTML strings for rich text formatting
-const logs: LogEntry[] = [
+export const logs: LogEntry[] = [
   {
     id: "LOG-004",
     date: "10.12.2025",
@@ -333,12 +332,6 @@ interface JournalProps {
 }
 
 export const Journal: React.FC<JournalProps> = ({ onBack }) => {
-  const [selectedEntry, setSelectedEntry] = useState<LogEntry | null>(null);
-
-  if (selectedEntry) {
-    return <LogDetail entry={selectedEntry} onBack={() => setSelectedEntry(null)} />;
-  }
-
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 sm:px-6 relative z-10 animate-[fadeIn_0.5s_ease-in-out]">
       
@@ -369,7 +362,7 @@ export const Journal: React.FC<JournalProps> = ({ onBack }) => {
       {/* Featured Article (First one) */}
       <div className="max-w-7xl mx-auto mb-16">
          <div 
-           onClick={() => setSelectedEntry(logs[0])}
+           onClick={() => window.location.hash = `#/journal/log/${logs[0].id}`}
            className="group relative rounded-3xl overflow-hidden cursor-pointer border border-white/10 bg-slate-900 shadow-2xl"
          >
             <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -420,7 +413,7 @@ export const Journal: React.FC<JournalProps> = ({ onBack }) => {
         {logs.slice(1).map((log) => (
           <article 
             key={log.id} 
-            onClick={() => setSelectedEntry(log)}
+            onClick={() => window.location.hash = `#/journal/log/${log.id}`}
             className="group relative bg-slate-900/50 border border-white/10 rounded-2xl overflow-hidden hover:border-ecliptix-orange/50 transition-all duration-300 flex flex-col h-full cursor-pointer hover:bg-slate-900"
           >
             
