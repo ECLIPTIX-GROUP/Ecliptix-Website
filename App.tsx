@@ -138,8 +138,44 @@ export default function App() {
     setMobileMenuOpen(false);
   };
 
+  // --- AGGRESSIVE SCROLL TO TOP ON VIEW CHANGE ---
+  // This hook ensures that whenever any view state changes, the window scrolls to top immediately.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [
+    selectedService,
+    selectedProduct,
+    selectedModule,
+    demoRequestProduct,
+    applyingJob,
+    registeringCourse,
+    selectedProcessStep,
+    showPartnershipRequest,
+    showSuccessPage,
+    selectedLog,
+    selectedCourse,
+    selectedJob,
+    showCareers,
+    showJournal,
+    showTeam,
+    showPrivacy,
+    showTerms,
+    showAcademy,
+    showHub,
+    showNeural,
+    showQuantum,
+    showDeep,
+    showSwarm,
+    showZero
+  ]);
+
   // --- ROUTER LOGIC ---
   useEffect(() => {
+    // 1. DISABLE BROWSER SCROLL RESTORATION
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
     const handleHashChange = () => {
       const hash = window.location.hash;
       
@@ -147,7 +183,8 @@ export default function App() {
       if (!hash || hash === '#/') {
         resetAllViews();
         setActiveNav('');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Instant Scroll
+        window.scrollTo(0, 0);
         return;
       }
 
@@ -156,6 +193,7 @@ export default function App() {
         const section = hash.split('/')[2];
         resetAllViews();
         setActiveNav(section);
+        // Scroll to section with a slight delay to allow rendering
         setTimeout(() => {
           const element = document.getElementById(section);
           if (element) {
@@ -200,6 +238,10 @@ export default function App() {
         const id = hash.split('/')[2];
         const service = servicesData.find(s => s.id === id);
         if (service) setSelectedService(service);
+      } else if (hash.startsWith('#/process/')) {
+        const id = hash.split('/')[2];
+        const step = processSteps.find(s => s.id === id);
+        if (step) setSelectedProcessStep(step);
       } else if (hash === '#/team') {
         setShowTeam(true);
         setActiveNav('team');
@@ -219,7 +261,24 @@ export default function App() {
         setShowZero(true);
       }
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // 2. AGGRESSIVE SCROLL TO TOP
+      // Scroll immediately
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+
+      // Scroll again after a tiny delay to allow React to render the new component
+      // This beats the browser's attempt to restore scroll position at bottom
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }, 10);
+
+      // Final check for slower devices
+      setTimeout(() => {
+        if (window.scrollY > 0) window.scrollTo(0, 0);
+      }, 50);
     };
 
     window.addEventListener('hashchange', handleHashChange);
@@ -242,10 +301,8 @@ export default function App() {
 
   const handleBackToProduct = () => {
     if (selectedProduct) {
-       // Since module detail is overlay on product detail conceptually in router? 
-       // Actually module detail is sub-view. If we want link for module, we need #/module/...
-       // For now, simpler to just close module state if we didn't add deep link for modules yet.
        setSelectedModule(null);
+       window.scrollTo(0, 0);
     } else {
        window.location.hash = '#/hub';
     }
@@ -253,22 +310,27 @@ export default function App() {
 
   const handleRequestDemo = (product: ProductItem) => {
     setDemoRequestProduct(product);
+    window.scrollTo(0, 0);
   };
 
   const handleJobApplication = (job: JobPosting) => {
     setApplyingJob(job);
+    window.scrollTo(0, 0);
   };
 
   const handleSpontaneousApplication = () => {
     setApplyingJob('spontaneous');
+    window.scrollTo(0, 0);
   };
 
   const handleCourseRegistration = (course: Course) => {
     setRegisteringCourse(course);
+    window.scrollTo(0, 0);
   };
 
   const handlePartnershipRequest = () => {
     setShowPartnershipRequest(true);
+    window.scrollTo(0, 0);
   };
 
   const handleSubmitSuccess = () => {
@@ -278,7 +340,7 @@ export default function App() {
     setRegisteringCourse(null);
     setShowPartnershipRequest(false);
     setShowSuccessPage(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -399,7 +461,7 @@ export default function App() {
         ) : selectedProcessStep ? (
           <ProcessDetail 
             step={selectedProcessStep}
-            onBack={() => setSelectedProcessStep(null)}
+            onBack={() => window.location.hash = '#/section/process'}
           />
         ) : selectedCourse ? (
           <CourseDetail 
@@ -452,7 +514,7 @@ export default function App() {
           <>
             <Hero onDiscover={() => scrollToSection('services')} onOpenJournal={() => window.location.hash = '#/journal'} />
             <About />
-            <Process onStepClick={setSelectedProcessStep} />
+            <Process onStepClick={(step) => window.location.hash = `#/process/${step.id}`} />
             <Hub onProductClick={(p) => window.location.hash = `#/product/${p.id}`} isSection={true} />
             <Services onServiceClick={(s) => window.location.hash = `#/service/${s.id}`} />
             <AcademyPreview onOpen={() => window.location.hash = '#/academy'} />
