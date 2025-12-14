@@ -43,7 +43,7 @@ export interface ProductItem {
   subtitle: string;
   description: string;
   fullDescription: string;
-  themeColor: 'green' | 'blue';
+  themeColor: 'green' | 'blue' | 'purple' | 'orange';
   icon: ReactNode;
   modules: ProductModule[];
   impactStats: { value: string; label: string }[];
@@ -81,6 +81,20 @@ export interface LogEntry {
   clearanceLevel?: string; 
   content?: string; 
   tags?: string[];
+}
+
+export interface PodcastEpisode {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  duration: string;
+  guest: string;
+  role: string;
+  image: string;
+  tags: string[];
+  spotifyLink?: string;
+  youtubeLink?: string;
 }
 
 export interface Course {

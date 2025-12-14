@@ -13,6 +13,7 @@ import { ServiceDetail } from './components/ServiceDetail';
 import { ProductDetail } from './components/ProductDetail';
 import { ModuleDetail } from './components/ModuleDetail';
 import { Journal, logs } from './components/Journal';
+import { Podcast } from './components/Podcast';
 import { Partners } from './components/Partners';
 import { Team } from './components/Team';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
@@ -34,7 +35,7 @@ import { ProcessDetail } from './components/ProcessDetail';
 import { LogDetail } from './components/LogDetail';
 import { CourseDetail } from './components/CourseDetail';
 import { JobDetail } from './components/JobDetail';
-import { Facebook, Linkedin, Menu, X } from 'lucide-react';
+import { Facebook, Linkedin, Menu, X, Radio } from 'lucide-react';
 import { ServiceItem, ProductItem, ProductModule, JobPosting, Course, ProcessStep, LogEntry } from './types';
 
 // Star generator component
@@ -92,6 +93,7 @@ export default function App() {
   // Page States
   const [showCareers, setShowCareers] = useState(false);
   const [showJournal, setShowJournal] = useState(false);
+  const [showPodcast, setShowPodcast] = useState(false);
   const [showTeam, setShowTeam] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
@@ -122,6 +124,7 @@ export default function App() {
     setShowSuccessPage(false);
     setShowCareers(false);
     setShowJournal(false);
+    setShowPodcast(false);
     setShowTeam(false);
     setShowPrivacy(false);
     setShowTerms(false);
@@ -157,6 +160,7 @@ export default function App() {
     selectedJob,
     showCareers,
     showJournal,
+    showPodcast,
     showTeam,
     showPrivacy,
     showTerms,
@@ -220,6 +224,9 @@ export default function App() {
         const id = hash.split('/')[3];
         const log = logs.find(l => l.id === id);
         if (log) setSelectedLog(log);
+      } else if (hash === '#/podcast') {
+        setShowPodcast(true);
+        setActiveNav('podcast');
       } else if (hash === '#/careers') {
         setShowCareers(true);
         setActiveNav('careers');
@@ -381,6 +388,10 @@ export default function App() {
                  <span className="relative z-10">Journal</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'journal' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
+              <button onClick={() => window.location.hash = '#/podcast'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'podcast' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'}`}>
+                 <span className="relative z-10">Podcast</span>
+                 <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-cyan-400 transform transition-transform origin-right duration-500 ${activeNav === 'podcast' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
+              </button>
               <button onClick={() => window.location.hash = '#/team'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'team' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
                  <span className="relative z-10">Team</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'team' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
@@ -406,6 +417,7 @@ export default function App() {
               <button onClick={() => window.location.hash = '#/academy'} className="block w-full text-left px-4 py-3 border-l-2 border-purple-400 text-purple-400 hover:bg-white/5">Academy</button>
               <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Mission</button>
               <button onClick={() => window.location.hash = '#/journal'} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Journal</button>
+              <button onClick={() => window.location.hash = '#/podcast'} className="block w-full text-left px-4 py-3 border-l-2 border-cyan-400 text-cyan-400 hover:bg-white/5">Podcast</button>
               <button onClick={() => window.location.hash = '#/team'} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Team</button>
               <button onClick={() => window.location.hash = '#/careers'} className="block w-full text-left px-4 py-3 border-l-2 border-ecliptix-orange text-ecliptix-orange hover:bg-white/5">Carrière</button>
               <button onClick={() => scrollToSection('contact')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-500 hover:text-white hover:bg-white/5">Comm Link</button>
@@ -488,6 +500,8 @@ export default function App() {
           />
         ) : showJournal ? (
           <Journal onBack={handleBackToOrbit} />
+        ) : showPodcast ? (
+          <Podcast onBack={handleBackToOrbit} />
         ) : showTeam ? (
           <Team onBack={handleBackToOrbit} />
         ) : showPrivacy ? (
@@ -554,6 +568,7 @@ export default function App() {
               <h4 className="text-white font-mono font-bold uppercase tracking-widest text-xs mb-6 border-b border-white/10 pb-2 inline-block">Base Info</h4>
               <ul className="space-y-3 text-sm text-slate-500">
                 <li onClick={() => window.location.hash = '#/academy'} className="hover:text-purple-400 cursor-pointer transition-colors text-purple-400 font-bold">Ecliptix Academy</li>
+                <li onClick={() => window.location.hash = '#/podcast'} className="hover:text-cyan-400 cursor-pointer transition-colors">Podcast</li>
                 <li onClick={() => window.location.hash = '#/careers'} className="hover:text-ecliptix-orange cursor-pointer transition-colors text-ecliptix-orange/80 font-bold">Rejoindre l'équipe</li>
                 <li onClick={() => window.location.hash = '#/team'} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Information Société</li>
                 <li onClick={() => window.location.hash = '#/journal'} className="hover:text-ecliptix-orange cursor-pointer transition-colors">Journal de Mission</li>

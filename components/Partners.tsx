@@ -1,12 +1,13 @@
+
 import React from 'react';
 import { Network, Share2, Handshake, ArrowRight, Building2, Globe, Cpu, ShieldCheck } from 'lucide-react';
 
 const partners = [
   { 
-    name: "APNA", 
-    logo: "https://tse4.mm.bing.net/th/id/OIP.C3OEJJn36aWZ9rWgpbbzxQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+    name: "GGGI", 
+    logo: "https://globalabc.org/sites/default/files/members/1.31%20GGGI%20Logo%20New%20Green.png",
     type: "Institutionnel",
-    desc: "Agence de Promotion du Numérique"
+    desc: "Global Green Growth Institute"
   },
   { 
     name: "AI Hub Senegal", 

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Sprout, Satellite, Wifi, MessageSquare, Users, Plane, ArrowRight, Scan, PieChart, Crosshair, ArrowLeft, FlaskConical } from 'lucide-react';
+import { Sprout, Satellite, Wifi, MessageSquare, Users, Plane, ArrowRight, Scan, PieChart, Crosshair, ArrowLeft, FlaskConical, HardHat, ShieldCheck, Hammer, ClipboardList, TrendingUp, Truck, PackageCheck } from 'lucide-react';
 import { ProductItem } from '../types';
 
 export const productsData: ProductItem[] = [
@@ -191,6 +191,89 @@ export const productsData: ProductItem[] = [
         ]
       }
     ]
+  },
+  {
+    id: "PROD-FASSI",
+    title: "FASSI",
+    subtitle: "BTP Operating System",
+    themeColor: "orange",
+    icon: <HardHat />,
+    description: "Plateforme 360° de pilotage de chantiers BTP : gestion de projet, suivi budgétaire et certification de conformité.",
+    targetAudience: "Entreprises BTP, Promoteurs, Maîtres d'Ouvrage, Bureaux de Contrôle",
+    impactStats: [
+      { label: "Retards", value: "-70%" },
+      { label: "Marge Nette", value: "+15%" },
+      { label: "Traçabilité", value: "100%" }
+    ],
+    fullDescription: "FASSI évolue pour devenir le système d'exploitation du BTP en Afrique. Plus qu'un simple outil de certification, c'est une tour de contrôle complète pour les entreprises de construction.\n\nElle permet de piloter l'avancement physique des travaux, de gérer les ressources (matériaux, main d'œuvre) et de garantir la qualité technique via des certifications digitales infalsifiables. FASSI réduit les retards, sécurise les marges et instaure un climat de confiance absolu entre maîtres d'ouvrage et entreprises.",
+    modules: [
+      {
+        id: "MOD-SITE-MASTER",
+        title: "Site-Master",
+        subtitle: "Pilotage de Chantier",
+        description: "Suivi d'avancement physique, journal de chantier numérique et coordination des équipes.",
+        icon: <ClipboardList />,
+        techTags: ["Real-time Sync", "Mobile Reporting", "Team Collab"],
+        fullDescription: "Site-Master est le cerveau opérationnel du chantier. Il remplace les rapports papiers et les groupes WhatsApp chaotiques. Les chefs de chantier remontent l'avancement quotidien, pointent les présences et signalent les bloquants directement depuis leur smartphone. Le bureau a une visibilité instantanée sur la réalité du terrain.",
+        architecture: "Application mobile offline-first synchronisée avec un dashboard web central. Utilisation de la géolocalisation pour valider la présence sur site et horodatage blockchain des rapports journaliers.",
+        keyFeatures: [
+          "Journal de chantier digital",
+          "Suivi des tâches (Gantt dynamique)",
+          "Gestion des réserves avec photos",
+          "Pointage des équipes"
+        ],
+        specs: [
+          { label: "Mode", value: "Offline / Online" },
+          { label: "Utilisateurs", value: "Illimité" },
+          { label: "Export", value: "PDF / Excel" },
+          { label: "Notifications", value: "Push / SMS" }
+        ]
+      },
+      {
+        id: "MOD-CERTIF-SHIELD",
+        title: "Certif-Shield",
+        subtitle: "Confiance & Qualité",
+        description: "Gestion des agréments, contrôle qualité et certification digitale des étapes clés.",
+        icon: <ShieldCheck />,
+        techTags: ["Blockchain", "Document AI", "Quality Control"],
+        fullDescription: "La confiance est la monnaie du BTP. Certif-Shield numérise et vérifie tous les documents critiques : assurances décennales, agréments techniques, PV de réception. L'IA analyse la validité des pièces et la Blockchain ancre les étapes clés du projet pour créer un dossier technique infalsifiable.",
+        architecture: "Coffre-fort numérique sécurisé avec analyse documentaire par OCR/NLP. Génération de certificats numériques (NFT/Verifiable Credentials) pour chaque jalon validé.",
+        keyFeatures: [
+          "Vérification automatique documents",
+          "Ancrage Blockchain des PV",
+          "Portefeuille de qualifications",
+          "Score de fiabilité entreprise"
+        ],
+        specs: [
+          { label: "Sécurité", value: "AES-256 + Blockchain" },
+          { label: "Conformité", value: "Normes BTP" },
+          { label: "Vérification", value: "IA + Humain" },
+          { label: "Accès", value: "QR Code Sécurisé" }
+        ]
+      },
+      {
+        id: "MOD-RESOURCE-FLOW",
+        title: "Resource-Flow",
+        subtitle: "Gestion & Budget",
+        description: "Suivi des consommations matériaux, gestion des approvisionnements et contrôle budgétaire.",
+        icon: <TrendingUp />,
+        techTags: ["Cost Control", "Supply Chain", "Predictive Analytics"],
+        fullDescription: "Maîtrisez vos marges. Resource-Flow permet de suivre en temps réel la consommation des matériaux (Ciment, Fer, Béton) et de les comparer au budget initial. L'IA détecte les écarts anormaux (vols, gaspillage) et prédit les besoins de réapprovisionnement pour éviter les ruptures de stock.",
+        architecture: "Système de gestion de stock simplifié connecté aux données de chantier. Algorithmes prédictifs basés sur l'avancement physique pour estimer le 'Reste à Faire' (RAF) et le coût final.",
+        keyFeatures: [
+          "Suivi budgétaire en temps réel",
+          "Gestion des stocks chantiers",
+          "Commandes fournisseurs intégrées",
+          "Alertes dépassement budget"
+        ],
+        specs: [
+          { label: "Précision", value: "Temps réel" },
+          { label: "Intégration", value: "Excel / ERP" },
+          { label: "Analyse", value: "Écart / Prévision" },
+          { label: "ROI", value: "Immédiat" }
+        ]
+      }
+    ]
   }
 ];
 
@@ -203,6 +286,7 @@ interface HubProps {
 export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = false }) => {
   const pestAI = productsData[0];
   const localPro = productsData[1];
+  const fassi = productsData[2]; // FASSI is now at index 2
 
   const Container = isSection ? 'section' : 'div';
   const containerClasses = isSection 
@@ -257,7 +341,7 @@ export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = fa
             {/* Header Product */}
             <div className="p-6 md:p-12 border-b border-green-500/20 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between bg-green-950/20 group-hover:bg-green-950/30 transition-colors">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6 w-full md:w-auto">
-                {/* INCREASED LOGO SIZE HERE */}
+                {/* LOGO CONTAINER */}
                 <div className="w-24 h-24 md:w-40 md:h-40 rounded-2xl bg-green-900/30 border border-green-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(34,197,94,0.2)] group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
                   <img 
                     src="https://media.licdn.com/dms/image/v2/D4E0BAQF8aFwVyRfGHg/company-logo_200_200/B4EZU33xiUHcAI-/0/1740399123289?e=1767225600&v=beta&t=7D5Lb2mOY1FULswru3tiJqVGinxqcpTCjunP-CToiHI" 
@@ -302,7 +386,7 @@ export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = fa
 
 
         {/* LOCALPRO.AI CARD */}
-        <div className="cursor-pointer group" onClick={() => onProductClick(localPro)}>
+        <div className="mb-16 md:mb-32 cursor-pointer group" onClick={() => onProductClick(localPro)}>
           <div className="relative bg-slate-900/60 border border-blue-500/30 rounded-3xl overflow-hidden backdrop-blur-sm hover:border-blue-500/60 transition-colors duration-500 hover:shadow-[0_0_50px_rgba(59,130,246,0.1)]">
             {/* Header Product */}
             <div className="p-6 md:p-12 border-b border-blue-500/20 flex flex-col md:flex-row-reverse gap-8 items-start md:items-center justify-between bg-blue-950/20 group-hover:bg-blue-950/30 transition-colors">
@@ -311,7 +395,7 @@ export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = fa
                   <h3 className="text-3xl font-bold text-white font-mono tracking-tight">{localPro.title}</h3>
                   <p className="text-blue-400 font-mono text-xs uppercase tracking-widest mt-1">:: {localPro.subtitle} ::</p>
                 </div>
-                {/* INCREASED LOGO SIZE FOR LOCALPRO */}
+                {/* LOGO */}
                 <div className="w-24 h-24 md:w-40 md:h-40 rounded-2xl bg-blue-900/30 border border-blue-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.2)] group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
                   <img 
                     src="https://media.licdn.com/dms/image/v2/D4D0BAQEntAyOwWUb0g/company-logo_200_200/B4DZsUpxv2J8AQ-/0/1765578062500?e=1767225600&v=beta&t=Mt_nY4KO_x2cCiynGSOhv_rJUOymanuKLrNxxPytWGo" 
@@ -327,7 +411,7 @@ export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = fa
               </div>
             </div>
 
-            {/* Preview Modules - 3 Columns for 3 modules */}
+            {/* Preview Modules */}
             <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-blue-500/20">
               {localPro.modules.map((mod, idx) => (
                 <div key={idx} className="p-6 md:p-8 hover:bg-blue-500/5 transition-colors">
@@ -345,6 +429,51 @@ export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = fa
              <div className="p-4 bg-blue-950/30 border-t border-blue-500/20 text-center group-hover:bg-blue-500/20 transition-colors">
               <button className="text-xs font-mono text-blue-400 group-hover:text-white uppercase tracking-widest flex items-center justify-center gap-2 transition-colors">
                 Déployer maintenant <ArrowRight size={12} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* FASSI CARD (ORANGE THEME) */}
+        <div className="cursor-pointer group" onClick={() => onProductClick(fassi)}>
+          <div className="relative bg-slate-900/60 border border-orange-500/30 rounded-3xl overflow-hidden backdrop-blur-sm hover:border-orange-500/60 transition-colors duration-500 hover:shadow-[0_0_50px_rgba(249,115,22,0.1)]">
+            
+            {/* Header Product */}
+            <div className="p-6 md:p-12 border-b border-orange-500/20 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between bg-orange-950/20 group-hover:bg-orange-950/30 transition-colors">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6 w-full md:w-auto">
+                <div className="w-24 h-24 md:w-40 md:h-40 rounded-2xl bg-orange-900/30 border border-orange-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(249,115,22,0.2)] group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
+                   <HardHat size={64} className="text-orange-400" />
+                </div>
+                <div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-white font-mono tracking-tight">{fassi.title}</h3>
+                  <p className="text-orange-400 font-mono text-xs md:text-sm uppercase tracking-widest mt-2">:: {fassi.subtitle} ::</p>
+                </div>
+              </div>
+              <div className="text-left md:text-right max-w-lg">
+                <p className="text-slate-300 text-sm leading-relaxed">
+                  {fassi.description}
+                </p>
+              </div>
+            </div>
+
+            {/* Preview Modules */}
+            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-orange-500/20">
+              {fassi.modules.map((mod, idx) => (
+                <div key={idx} className="p-6 md:p-8 hover:bg-orange-500/5 transition-colors">
+                  <div className="flex items-center gap-3 mb-4 text-orange-400">
+                    {React.cloneElement(mod.icon as React.ReactElement<any>, { size: 20 })}
+                    <h4 className="font-bold uppercase tracking-wider text-sm">{mod.title}</h4>
+                  </div>
+                  <p className="text-slate-400 text-xs line-clamp-3 leading-relaxed">
+                    {mod.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+            
+            <div className="p-4 bg-orange-950/30 border-t border-orange-500/20 text-center group-hover:bg-orange-500/20 transition-colors">
+              <button className="text-xs font-mono text-orange-400 group-hover:text-white uppercase tracking-widest flex items-center justify-center gap-2 transition-colors">
+                Piloter vos chantiers <ArrowRight size={12} />
               </button>
             </div>
 

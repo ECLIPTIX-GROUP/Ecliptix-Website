@@ -5,15 +5,23 @@ import { ProductModule } from '../types';
 interface ModuleDetailProps {
   module: ProductModule;
   productName: string;
-  themeColor: 'green' | 'blue';
+  themeColor: 'green' | 'blue' | 'purple' | 'orange';
   onBack: () => void;
 }
 
 export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, productName, themeColor, onBack }) => {
-  const isGreen = themeColor === 'green';
-  const accentColor = isGreen ? 'text-green-400' : 'text-blue-400';
-  const bgAccentColor = isGreen ? 'bg-green-500' : 'bg-blue-500';
-  const borderColor = isGreen ? 'border-green-500' : 'border-blue-500';
+  
+  // Theme Logic
+  const getTheme = () => {
+    switch(themeColor) {
+      case 'green': return { accent: 'text-green-400', bgAccent: 'bg-green-500', border: 'border-green-500', bgSoft: 'bg-green-900/10' };
+      case 'purple': return { accent: 'text-purple-400', bgAccent: 'bg-purple-500', border: 'border-purple-500', bgSoft: 'bg-purple-900/10' };
+      case 'orange': return { accent: 'text-orange-400', bgAccent: 'bg-orange-500', border: 'border-orange-500', bgSoft: 'bg-orange-900/10' };
+      default: return { accent: 'text-blue-400', bgAccent: 'bg-blue-500', border: 'border-blue-500', bgSoft: 'bg-blue-900/10' };
+    }
+  };
+
+  const theme = getTheme();
 
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 sm:px-6 relative z-10 animate-[fadeIn_0.5s_ease-in-out]">
@@ -26,19 +34,19 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, productName,
         {/* Navigation */}
         <button 
           onClick={onBack}
-          className={`group flex items-center gap-2 text-slate-400 hover:${accentColor} transition-colors font-mono text-xs uppercase tracking-widest mb-8`}
+          className={`group flex items-center gap-2 text-slate-400 hover:${theme.accent} transition-colors font-mono text-xs uppercase tracking-widest mb-8`}
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
           Retour au Système {productName}
         </button>
 
         {/* Header Block */}
-        <div className={`border-l-4 ${borderColor} pl-8 mb-16 relative`}>
-           <div className={`absolute -left-[5px] top-0 w-2 h-2 ${bgAccentColor} rounded-full`}></div>
-           <div className={`absolute -left-[5px] bottom-0 w-2 h-2 ${bgAccentColor} rounded-full`}></div>
+        <div className={`border-l-4 ${theme.border} pl-8 mb-16 relative`}>
+           <div className={`absolute -left-[5px] top-0 w-2 h-2 ${theme.bgAccent} rounded-full`}></div>
+           <div className={`absolute -left-[5px] bottom-0 w-2 h-2 ${theme.bgAccent} rounded-full`}></div>
            
            <div className="flex items-center gap-4 mb-2">
-             <div className={`p-2 rounded bg-white/5 border border-white/10 ${accentColor}`}>
+             <div className={`p-2 rounded bg-white/5 border border-white/10 ${theme.accent}`}>
                 {React.cloneElement(module.icon as React.ReactElement<any>, { size: 24 })}
              </div>
              <span className="font-mono text-xs text-slate-500 uppercase tracking-[0.2em]">Architecture Modulaire // {module.id}</span>
@@ -47,7 +55,7 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, productName,
            <h1 className="text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter mb-4">
              {module.title}
            </h1>
-           <p className={`text-xl font-mono ${accentColor} uppercase tracking-widest`}>
+           <p className={`text-xl font-mono ${theme.accent} uppercase tracking-widest`}>
              {module.subtitle}
            </p>
         </div>
@@ -60,7 +68,7 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, productName,
             {/* Overview */}
             <div className="hud-panel p-8 bg-slate-900/50">
                <h3 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
-                 <Activity size={18} className={accentColor} /> 
+                 <Activity size={18} className={theme.accent} /> 
                  Protocole Opérationnel
                </h3>
                <p className="text-slate-300 leading-loose font-light whitespace-pre-wrap">
@@ -71,12 +79,12 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, productName,
             {/* System Architecture */}
             <div className="hud-panel p-8 bg-slate-900/50 relative overflow-hidden">
                {/* Decorative circuitry */}
-               <div className={`absolute top-0 right-0 p-12 opacity-5 pointer-events-none ${accentColor}`}>
+               <div className={`absolute top-0 right-0 p-12 opacity-5 pointer-events-none ${theme.accent}`}>
                   <Cpu size={200} />
                </div>
 
                <h3 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
-                 <Layers size={18} className={accentColor} /> 
+                 <Layers size={18} className={theme.accent} /> 
                  Architecture Système
                </h3>
                <p className="text-slate-400 text-sm leading-relaxed mb-8 border-l border-white/10 pl-4">
@@ -86,7 +94,7 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, productName,
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  {module.keyFeatures?.map((feature, idx) => (
                    <div key={idx} className="flex items-start gap-3 p-4 border border-white/5 bg-black/20">
-                      <div className={`mt-1 w-1.5 h-1.5 rounded-full ${bgAccentColor} shrink-0`}></div>
+                      <div className={`mt-1 w-1.5 h-1.5 rounded-full ${theme.bgAccent} shrink-0`}></div>
                       <span className="text-slate-300 text-sm">{feature}</span>
                    </div>
                  ))}
@@ -108,7 +116,7 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, productName,
                 {module.specs?.map((spec, idx) => (
                   <div key={idx} className="p-4 flex flex-col gap-1 hover:bg-white/5 transition-colors">
                     <span className="text-[10px] font-mono text-slate-500 uppercase">{spec.label}</span>
-                    <span className={`font-mono text-sm ${accentColor}`}>{spec.value}</span>
+                    <span className={`font-mono text-sm ${theme.accent}`}>{spec.value}</span>
                   </div>
                 ))}
               </div>
@@ -128,7 +136,7 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, productName,
                </div>
             </div>
 
-            <div className={`p-4 border ${borderColor}/30 bg-${themeColor}-900/10 rounded-lg`}>
+            <div className={`p-4 border ${theme.border}/30 ${theme.bgSoft} rounded-lg`}>
                <p className="text-[10px] text-slate-400 font-mono text-center">
                  Ce module est prêt pour le déploiement immédiat via le Core Ecliptix.
                </p>

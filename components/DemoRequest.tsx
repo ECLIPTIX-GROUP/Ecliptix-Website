@@ -24,16 +24,32 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
 
   // Helper to check type
   const isProduct = (item: any): item is ProductItem => 'themeColor' in item;
-  const isGreen = isProduct(product) ? product.themeColor === 'green' : true; // Default to green/orange for services
+  
+  // Theme logic
+  const getTheme = () => {
+    if (isProduct(product)) {
+      if (product.themeColor === 'green') return { accent: 'text-green-400', bgAccent: 'bg-green-500', border: 'border-green-500', ring: 'ring-green-500', gradient: 'from-green-900/30' };
+      if (product.themeColor === 'purple') return { accent: 'text-purple-400', bgAccent: 'bg-purple-500', border: 'border-purple-500', ring: 'ring-purple-500', gradient: 'from-purple-900/30' };
+      if (product.themeColor === 'orange') return { accent: 'text-orange-400', bgAccent: 'bg-orange-500', border: 'border-orange-500', ring: 'ring-orange-500', gradient: 'from-orange-900/30' };
+    }
+    // Default blue/orange
+    return { accent: 'text-blue-400', bgAccent: 'bg-blue-500', border: 'border-blue-500', ring: 'ring-blue-500', gradient: 'from-blue-900/30' };
+  };
 
-  const accentColor = isGreen ? 'text-green-400' : 'text-blue-400';
-  const bgAccentColor = isGreen ? 'bg-green-500' : 'bg-blue-500';
-  const borderColor = isGreen ? 'border-green-500' : 'border-blue-500';
+  const theme = getTheme();
 
   // Define targets based on product type
-  const targets = isGreen 
-    ? ["Agriculteur Indépendant", "Coopérative Agricole", "Agrobusiness / Industriel", "Institut de Recherche", "ONG / Gouvernement", "Autre"]
-    : ["Freelance / Indépendant", "Artisan / Commerçant", "TPE / PME", "Startup", "Agence", "Autre"];
+  let targets = ["Freelance / Indépendant", "Artisan / Commerçant", "TPE / PME", "Startup", "Agence", "Autre"]; // Default
+  
+  if (isProduct(product)) {
+    if (product.themeColor === 'green') {
+      targets = ["Agriculteur Indépendant", "Coopérative Agricole", "Agrobusiness / Industriel", "Institut de Recherche", "ONG / Gouvernement", "Autre"];
+    } else if (product.themeColor === 'purple') {
+      targets = ["École / Lycée", "Université / Institut", "Parent d'élève", "Ministère Éducation", "ONG Éducation", "Autre"];
+    } else if (product.themeColor === 'orange') {
+      targets = ["Entreprise BTP", "Artisan BTP", "Mairie / Collectivité", "Bureau d'Études", "Promoteur Immobilier", "Autre"];
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +82,7 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
       <div className={`w-full md:w-1/3 relative overflow-hidden flex flex-col p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10`}>
          {/* Background Image/Gradient */}
          <div className="absolute inset-0 bg-slate-900 z-0">
-            <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-b ${isGreen ? 'from-green-900/30' : 'from-blue-900/30'} to-black opacity-60`}></div>
+            <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-b ${theme.gradient} to-black opacity-60`}></div>
             {/* Abstract Tech Lines */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
          </div>
@@ -76,15 +92,15 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
               onClick={onBack}
               className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors font-mono text-xs uppercase tracking-widest mb-12 self-start"
             >
-              <ArrowLeft size={16} /> Retour
+              <ArrowLeft size={16} /> Annuler
             </button>
 
             <div className="mt-auto mb-8">
-               <div className={`w-16 h-16 rounded-2xl ${isGreen ? 'bg-green-500/10 border-green-500/30' : 'bg-blue-500/10 border-blue-500/30'} border flex items-center justify-center mb-6`}>
-                 {React.isValidElement(product.icon) ? React.cloneElement(product.icon as React.ReactElement<any>, { className: `w-8 h-8 ${accentColor}` }) : null}
+               <div className={`w-16 h-16 rounded-2xl bg-white/5 border ${theme.border}/30 flex items-center justify-center mb-6`}>
+                 {React.isValidElement(product.icon) ? React.cloneElement(product.icon as React.ReactElement<any>, { className: `w-8 h-8 ${theme.accent}` }) : null}
                </div>
                <h2 className="text-3xl font-bold text-white mb-2">{product.title}</h2>
-               {isProduct(product) && <p className={`font-mono text-sm ${accentColor} uppercase tracking-widest mb-6`}>{product.subtitle}</p>}
+               {isProduct(product) && <p className={`font-mono text-sm ${theme.accent} uppercase tracking-widest mb-6`}>{product.subtitle}</p>}
                <p className="text-slate-400 text-sm leading-relaxed border-l-2 border-white/10 pl-4">
                  {product.description}
                </p>
@@ -134,7 +150,7 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
                           type="text" 
                           value={formData.firstName}
                           onChange={e => setFormData({...formData, firstName: e.target.value})}
-                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${borderColor} focus:ring-1 focus:ring-${isGreen ? 'green-500' : 'blue-500'} outline-none transition-all`}
+                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${theme.border} focus:ring-1 focus:${theme.ring} outline-none transition-all`}
                           placeholder="Ex: Jean"
                         />
                      </div>
@@ -145,7 +161,7 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
                           type="text" 
                           value={formData.lastName}
                           onChange={e => setFormData({...formData, lastName: e.target.value})}
-                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${borderColor} focus:ring-1 focus:ring-${isGreen ? 'green-500' : 'blue-500'} outline-none transition-all`}
+                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${theme.border} focus:ring-1 focus:${theme.ring} outline-none transition-all`}
                           placeholder="Ex: Diallo"
                         />
                      </div>
@@ -165,7 +181,7 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
                           type="email" 
                           value={formData.email}
                           onChange={e => setFormData({...formData, email: e.target.value})}
-                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${borderColor} focus:ring-1 focus:ring-${isGreen ? 'green-500' : 'blue-500'} outline-none transition-all`}
+                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${theme.border} focus:ring-1 focus:${theme.ring} outline-none transition-all`}
                           placeholder="nom@entreprise.com"
                         />
                      </div>
@@ -175,7 +191,7 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
                           type="tel" 
                           value={formData.phone}
                           onChange={e => setFormData({...formData, phone: e.target.value})}
-                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${borderColor} focus:ring-1 focus:ring-${isGreen ? 'green-500' : 'blue-500'} outline-none transition-all`}
+                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${theme.border} focus:ring-1 focus:${theme.ring} outline-none transition-all`}
                           placeholder="+221..."
                         />
                      </div>
@@ -194,8 +210,8 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
                           type="text" 
                           value={formData.organization}
                           onChange={e => setFormData({...formData, organization: e.target.value})}
-                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${borderColor} focus:ring-1 focus:ring-${isGreen ? 'green-500' : 'blue-500'} outline-none transition-all`}
-                          placeholder="Ex: Coopérative du Fleuve"
+                          className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${theme.border} focus:ring-1 focus:${theme.ring} outline-none transition-all`}
+                          placeholder="Ex: École Excellence"
                         />
                      </div>
                      <div className="space-y-2">
@@ -205,7 +221,7 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
                               required
                               value={formData.target}
                               onChange={e => setFormData({...formData, target: e.target.value})}
-                              className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${borderColor} focus:ring-1 focus:ring-${isGreen ? 'green-500' : 'blue-500'} outline-none transition-all appearance-none`}
+                              className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${theme.border} focus:ring-1 focus:${theme.ring} outline-none transition-all appearance-none`}
                            >
                               <option value="">Sélectionner...</option>
                               {targets.map((t, idx) => <option key={idx} value={t}>{t}</option>)}
@@ -224,7 +240,7 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
                      rows={4}
                      value={formData.message}
                      onChange={e => setFormData({...formData, message: e.target.value})}
-                     className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${borderColor} focus:ring-1 focus:ring-${isGreen ? 'green-500' : 'blue-500'} outline-none transition-all resize-none`}
+                     className={`w-full bg-slate-900 border border-white/10 p-4 text-white rounded focus:${theme.border} focus:ring-1 focus:${theme.ring} outline-none transition-all resize-none`}
                      placeholder="Décrivez vos défis actuels..."
                   ></textarea>
                </div>
@@ -243,7 +259,7 @@ export const DemoRequest: React.FC<DemoRequestProps> = ({ product, onBack, onSub
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className={`w-full flex-1 py-5 ${bgAccentColor} hover:opacity-90 text-black font-bold uppercase tracking-widest text-sm rounded-lg shadow-lg flex items-center justify-center gap-3 transition-all transform hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed`}
+                        className={`w-full flex-1 py-5 ${theme.bgAccent} hover:opacity-90 text-black font-bold uppercase tracking-widest text-sm rounded-lg shadow-lg flex items-center justify-center gap-3 transition-all transform hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed`}
                       >
                         {isSubmitting ? (
                           <>Envoi <Loader2 size={16} className="animate-spin" /></>

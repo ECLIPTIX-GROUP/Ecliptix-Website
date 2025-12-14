@@ -15,13 +15,49 @@ interface ProductDetailProps {
 export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, onModuleClick, onRequestDemo }) => {
   const [showDownloadAnim, setShowDownloadAnim] = useState(false);
   
-  const isGreen = product.themeColor === 'green';
-  
   // Dynamic color classes based on theme
-  const accentColor = isGreen ? 'text-green-400' : 'text-blue-400';
-  const bgAccentColor = isGreen ? 'bg-green-500' : 'bg-blue-500'; 
-  const borderColor = isGreen ? 'border-green-500' : 'border-blue-500';
-  const printAccentColor = isGreen ? '#22c55e' : '#3b82f6'; 
+  const getTheme = () => {
+    switch (product.themeColor) {
+      case 'green': 
+        return { 
+          accent: 'text-green-400', 
+          bgAccent: 'bg-green-500', 
+          border: 'border-green-500',
+          gradientFrom: 'from-green-900/20',
+          printColor: '#22c55e',
+          shadow: 'shadow-green-500/20'
+        };
+      case 'purple':
+        return { 
+          accent: 'text-purple-400', 
+          bgAccent: 'bg-purple-500', 
+          border: 'border-purple-500',
+          gradientFrom: 'from-purple-900/20',
+          printColor: '#a855f7',
+          shadow: 'shadow-purple-500/20'
+        };
+      case 'orange':
+        return { 
+          accent: 'text-orange-400', 
+          bgAccent: 'bg-orange-500', 
+          border: 'border-orange-500',
+          gradientFrom: 'from-orange-900/20',
+          printColor: '#f97316',
+          shadow: 'shadow-orange-500/20'
+        };
+      default: // blue
+        return { 
+          accent: 'text-blue-400', 
+          bgAccent: 'bg-blue-500', 
+          border: 'border-blue-500',
+          gradientFrom: 'from-blue-900/20',
+          printColor: '#3b82f6',
+          shadow: 'shadow-blue-500/20'
+        };
+    }
+  };
+
+  const theme = getTheme();
 
   const handleDownloadBrochure = () => {
     setShowDownloadAnim(true);
@@ -38,35 +74,35 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
         
         {/* Background Ambience */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-          <div className={`absolute top-[10%] right-[-10%] w-[800px] h-[800px] ${isGreen ? 'bg-green-900/10' : 'bg-blue-900/10'} rounded-full blur-[120px]`}></div>
+          <div className={`absolute top-[10%] right-[-10%] w-[800px] h-[800px] ${product.themeColor === 'green' ? 'bg-green-900/10' : product.themeColor === 'purple' ? 'bg-purple-900/10' : product.themeColor === 'orange' ? 'bg-orange-900/10' : 'bg-blue-900/10'} rounded-full blur-[120px]`}></div>
         </div>
 
         <div className="max-w-7xl mx-auto mb-8 relative z-10">
           <button 
             onClick={onBack}
-            className={`group flex items-center gap-2 text-slate-400 hover:${accentColor} transition-colors font-mono text-xs uppercase tracking-widest mb-8`}
+            className={`group flex items-center gap-2 text-slate-400 hover:${theme.accent} transition-colors font-mono text-xs uppercase tracking-widest mb-8`}
           >
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             Retour au Hub
           </button>
 
           {/* Hero Header */}
-          <div className={`relative overflow-hidden rounded-3xl border ${borderColor}/30 bg-slate-900/80 backdrop-blur-xl p-6 md:p-12 mb-12`}>
-            <div className={`absolute inset-0 bg-gradient-to-r ${isGreen ? 'from-green-900/20' : 'from-blue-900/20'} to-transparent`}></div>
+          <div className={`relative overflow-hidden rounded-3xl border ${theme.border}/30 bg-slate-900/80 backdrop-blur-xl p-6 md:p-12 mb-12`}>
+            <div className={`absolute inset-0 bg-gradient-to-r ${theme.gradientFrom} to-transparent`}></div>
             
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 items-center">
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className={`p-3 rounded-xl ${bgAccentColor}/10 border ${borderColor}/30`}>
+                  <div className={`p-3 rounded-xl ${theme.bgAccent}/10 border ${theme.border}/30`}>
                     {React.isValidElement(product.icon) && product.icon.type === 'img' ? (
                        <div className="w-8 h-8 rounded overflow-hidden">
                          {product.icon}
                        </div>
                     ) : (
-                       React.cloneElement(product.icon as React.ReactElement<any>, { className: `w-8 h-8 ${accentColor}` })
+                       React.cloneElement(product.icon as React.ReactElement<any>, { className: `w-8 h-8 ${theme.accent}` })
                     )}
                   </div>
-                  <span className={`font-mono text-xs font-bold ${accentColor} uppercase tracking-widest border border-${borderColor}/30 px-3 py-1 rounded-full`}>
+                  <span className={`font-mono text-xs font-bold ${theme.accent} uppercase tracking-widest border border-${theme.border}/30 px-3 py-1 rounded-full`}>
                     {product.subtitle}
                   </span>
                 </div>
@@ -83,12 +119,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
               {/* Key Stats */}
               <div className="grid grid-cols-1 gap-4">
                 {product.impactStats.map((stat, idx) => (
-                  <div key={idx} className={`p-4 bg-black/40 border ${borderColor}/20 rounded-lg flex items-center justify-between`}>
+                  <div key={idx} className={`p-4 bg-black/40 border ${theme.border}/20 rounded-lg flex items-center justify-between`}>
                     <span className="text-xs font-mono text-slate-500 uppercase">{stat.label}</span>
-                    <span className={`text-xl font-bold font-mono ${accentColor}`}>{stat.value}</span>
+                    <span className={`text-xl font-bold font-mono ${theme.accent}`}>{stat.value}</span>
                   </div>
                 ))}
-                <div className={`mt-4 p-4 border ${borderColor}/20 bg-${borderColor}/5 rounded-lg`}>
+                <div className={`mt-4 p-4 border ${theme.border}/20 bg-${theme.border}/5 rounded-lg`}>
                   <div className="text-[10px] font-mono text-slate-500 uppercase mb-2">Cible</div>
                   <div className="text-white text-sm">{product.targetAudience}</div>
                 </div>
@@ -378,7 +414,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
             <div className="lg:col-span-2 space-y-12">
               <div>
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                  <Globe className={`${accentColor}`} /> Vision Stratégique
+                  <Globe className={`${theme.accent}`} /> Vision Stratégique
                 </h3>
                 <p className="text-slate-400 leading-relaxed whitespace-pre-wrap">
                   {product.fullDescription}
@@ -388,7 +424,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
               {/* Modules Breakdown */}
               <div className="break-inside-avoid">
                 <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
-                  <Layers className={`${accentColor}`} /> Architecture Modulaire
+                  <Layers className={`${theme.accent}`} /> Architecture Modulaire
                 </h3>
                 
                 <div className="grid grid-cols-1 gap-6">
@@ -396,22 +432,22 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
                     <div 
                       key={idx} 
                       onClick={() => onModuleClick(module)}
-                      className={`group relative p-6 bg-slate-900/50 border ${borderColor}/20 hover:${borderColor}/50 transition-all rounded-xl overflow-hidden cursor-pointer shadow-lg hover:shadow-${bgAccentColor}/10`}
+                      className={`group relative p-6 bg-slate-900/50 border ${theme.border}/20 hover:${theme.border}/50 transition-all rounded-xl overflow-hidden cursor-pointer shadow-lg hover:${theme.shadow}`}
                     >
-                      <div className={`absolute top-0 left-0 w-1 h-full ${bgAccentColor} opacity-50 group-hover:w-1.5 transition-all`}></div>
+                      <div className={`absolute top-0 left-0 w-1 h-full ${theme.bgAccent} opacity-50 group-hover:w-1.5 transition-all`}></div>
                       
                       <div className="flex flex-col md:flex-row gap-6">
-                        <div className={`w-16 h-16 rounded-full ${bgAccentColor}/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
-                          {React.cloneElement(module.icon as React.ReactElement<any>, { className: `w-8 h-8 ${accentColor}` })}
+                        <div className={`w-16 h-16 rounded-full ${theme.bgAccent}/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
+                          {React.cloneElement(module.icon as React.ReactElement<any>, { className: `w-8 h-8 ${theme.accent}` })}
                         </div>
                         
                         <div className="flex-1">
                           <div className="flex justify-between items-start">
                              <div>
                                 <h4 className="text-xl font-bold text-white mb-2 group-hover:text-white transition-colors">{module.title}</h4>
-                                <p className={`text-xs font-mono ${accentColor} uppercase tracking-wider mb-3`}>{module.subtitle}</p>
+                                <p className={`text-xs font-mono ${theme.accent} uppercase tracking-wider mb-3`}>{module.subtitle}</p>
                              </div>
-                             <div className={`hidden md:flex items-center gap-1 text-[10px] font-mono ${accentColor} uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity`}>
+                             <div className={`hidden md:flex items-center gap-1 text-[10px] font-mono ${theme.accent} uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity`}>
                                 View Specs <ArrowRight size={12} />
                              </div>
                           </div>
@@ -437,10 +473,10 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
 
             {/* Sidebar CTA */}
             <div className="space-y-6">
-              <div className={`p-6 border ${borderColor}/30 rounded-xl bg-gradient-to-b from-${borderColor}/10 to-transparent sticky top-24`}>
+              <div className={`p-6 border ${theme.border}/30 rounded-xl bg-gradient-to-b ${theme.gradientFrom} to-transparent sticky top-24`}>
                 <div className="flex justify-center mb-6">
-                   <div className={`w-20 h-20 rounded-full ${bgAccentColor}/20 animate-pulse flex items-center justify-center border border-${borderColor}/50`}>
-                      <Zap className={`w-10 h-10 ${accentColor}`} />
+                   <div className={`w-20 h-20 rounded-full ${theme.bgAccent}/20 animate-pulse flex items-center justify-center border ${theme.border}/50`}>
+                      <Zap className={`w-10 h-10 ${theme.accent}`} />
                    </div>
                 </div>
                 <h3 className="text-center text-white font-bold mb-2">Prêt à déployer ?</h3>
@@ -450,7 +486,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
                 
                 <button 
                   onClick={() => onRequestDemo(product)}
-                  className={`w-full py-3 ${bgAccentColor} hover:opacity-90 text-black font-bold uppercase tracking-widest rounded transition-all mb-4 shadow-lg shadow-${bgAccentColor}/20`}
+                  className={`w-full py-3 ${theme.bgAccent} hover:opacity-90 text-black font-bold uppercase tracking-widest rounded transition-all mb-4 shadow-lg ${theme.shadow}`}
                 >
                   Demander une Démo
                 </button>
@@ -472,7 +508,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
         {showDownloadAnim && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 animate-[fadeIn_0.3s_ease-out]">
              <div className="text-center max-w-md px-4 relative">
-                <div className={`w-20 h-20 border-4 border-t-${isGreen ? 'green-500' : 'blue-500'} border-r-transparent border-b-${isGreen ? 'green-500' : 'blue-500'} border-l-transparent rounded-full animate-spin mx-auto mb-8`}></div>
+                <div className={`w-20 h-20 border-4 border-t-${product.themeColor === 'green' ? 'green-500' : product.themeColor === 'purple' ? 'purple-500' : product.themeColor === 'orange' ? 'orange-500' : 'blue-500'} border-r-transparent border-b-${product.themeColor === 'green' ? 'green-500' : product.themeColor === 'purple' ? 'purple-500' : product.themeColor === 'orange' ? 'orange-500' : 'blue-500'} border-l-transparent rounded-full animate-spin mx-auto mb-8`}></div>
                 <h3 className="text-2xl font-mono text-white uppercase tracking-widest animate-pulse mb-2">Génération...</h3>
                 <div className="bg-slate-800/80 p-6 rounded-xl text-left border border-white/10 mt-8">
                    <p className="text-white font-bold text-sm mb-2">Instructions d'Impression :</p>
@@ -494,10 +530,10 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
                <img src="https://media.licdn.com/dms/image/v2/D4E0BAQEDRW1wrkNA2g/company-logo_200_200/B4EZn_LZ1.GoAI-/0/1760922804191/ecliptix_group_logo?e=1766620800&v=beta&t=OGsYnzsuE3yGLA6ETAM_rzujDpAqoM2_kEmwBpr8Q44" alt="Ecliptix" className="h-20 w-auto" />
                <div className="h-16 w-px bg-slate-300"></div>
                {/* Use text or colored block if image fails, but try to use icon/image */}
-               <h1 className="text-4xl font-bold text-slate-900" style={{ color: printAccentColor }}>{product.title}</h1>
+               <h1 className="text-4xl font-bold text-slate-900" style={{ color: theme.printColor }}>{product.title}</h1>
             </div>
             <div className="text-right">
-               <div className="text-sm font-mono uppercase tracking-widest font-bold" style={{ color: printAccentColor }}>{product.subtitle}</div>
+               <div className="text-sm font-mono uppercase tracking-widest font-bold" style={{ color: theme.printColor }}>{product.subtitle}</div>
             </div>
          </div>
 
@@ -512,7 +548,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
                   {product.impactStats.map((stat, idx) => (
                     <div key={idx} className="flex justify-between items-baseline border-b border-slate-200 pb-2">
                        <span className="text-xs font-medium text-slate-600">{stat.label}</span>
-                       <span className="text-lg font-bold" style={{ color: printAccentColor }}>{stat.value}</span>
+                       <span className="text-lg font-bold" style={{ color: theme.printColor }}>{stat.value}</span>
                     </div>
                   ))}
                </div>
@@ -525,7 +561,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
                {product.modules.map((mod, idx) => (
                   <div key={idx} className="border border-slate-200 rounded-lg p-6 break-inside-avoid shadow-sm">
                      <h3 className="font-bold text-slate-900 text-base mb-1">{mod.title}</h3>
-                     <p className="text-[10px] font-mono uppercase text-slate-500 mb-2" style={{ color: printAccentColor }}>{mod.subtitle}</p>
+                     <p className="text-[10px] font-mono uppercase text-slate-500 mb-2" style={{ color: theme.printColor }}>{mod.subtitle}</p>
                      <p className="text-xs text-slate-600 leading-relaxed">{mod.description}</p>
                   </div>
                ))}
