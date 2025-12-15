@@ -100,7 +100,7 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBack }) => {
                 <div className="text-slate-400 text-sm leading-loose">
                   <p className="mb-2">Les opérations de vol sont soumises à la réglementation de l'ANACIM (Sénégal). Ecliptix se réserve le droit d'annuler une mission sans préavis en cas de :</p>
                   <ul className="list-disc pl-5 space-y-1">
-                    <li>Conditions météorologiques défavorables (Vents > 30km/h)</li>
+                    <li>Conditions météorologiques défavorables (Vents &gt; 30km/h)</li>
                     <li>Zone d'exclusion aérienne temporaire</li>
                     <li>Risque pour les personnes ou les biens au sol</li>
                   </ul>
