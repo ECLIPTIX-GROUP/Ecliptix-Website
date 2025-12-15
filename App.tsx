@@ -35,7 +35,7 @@ import { ProcessDetail } from './components/ProcessDetail';
 import { LogDetail } from './components/LogDetail';
 import { CourseDetail } from './components/CourseDetail';
 import { JobDetail } from './components/JobDetail';
-import { Facebook, Linkedin, Menu, X, Radio } from 'lucide-react';
+import { Facebook, Linkedin, Menu, X, Radio, MessageSquare, Phone } from 'lucide-react';
 import { ServiceItem, ProductItem, ProductModule, JobPosting, Course, ProcessStep, LogEntry } from './types';
 
 // Star generator component
@@ -368,41 +368,40 @@ export default function App() {
             </div>
             
             <div className="hidden md:flex items-center space-x-1">
-              <button onClick={() => scrollToSection('hub')} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'hub' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
-                 <span className="relative z-10">Innovation Hub</span>
+              <button onClick={() => scrollToSection('hub')} className={`relative px-3 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'hub' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
+                 <span className="relative z-10">Hub</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'hub' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-              <button onClick={() => scrollToSection('services')} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'services' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
+              <button onClick={() => scrollToSection('services')} className={`relative px-3 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'services' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
                  <span className="relative z-10">Services</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'services' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-              <button onClick={() => window.location.hash = '#/academy'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'academy' ? 'text-purple-400' : 'text-slate-400 hover:text-purple-400'}`}>
+              <button onClick={() => window.location.hash = '#/academy'} className={`relative px-3 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'academy' ? 'text-purple-400' : 'text-slate-400 hover:text-purple-400'}`}>
                  <span className="relative z-10">Academy</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-purple-500 transform transition-transform origin-right duration-500 ${activeNav === 'academy' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-              <button onClick={() => scrollToSection('about')} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'about' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
-                 <span className="relative z-10">Mission</span>
-                 <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'about' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
-              </button>
-              <button onClick={() => window.location.hash = '#/journal'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'journal' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
+              <button onClick={() => window.location.hash = '#/journal'} className={`relative px-3 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'journal' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
                  <span className="relative z-10">Journal</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'journal' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-              <button onClick={() => window.location.hash = '#/podcast'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'podcast' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'}`}>
+              <button onClick={() => window.location.hash = '#/podcast'} className={`relative px-3 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'podcast' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'}`}>
                  <span className="relative z-10">Podcast</span>
                  <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-cyan-400 transform transition-transform origin-right duration-500 ${activeNav === 'podcast' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
               </button>
-              <button onClick={() => window.location.hash = '#/team'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors group overflow-hidden ${activeNav === 'team' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
-                 <span className="relative z-10">Team</span>
-                 <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-ecliptix-orange transform transition-transform origin-right duration-500 ${activeNav === 'team' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
-              </button>
-              <button onClick={() => window.location.hash = '#/careers'} className={`relative px-6 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors border rounded ml-2 ${activeNav === 'careers' ? 'bg-ecliptix-orange text-black border-ecliptix-orange' : 'text-ecliptix-orange hover:text-white border-ecliptix-orange/30 hover:bg-ecliptix-orange/10'}`}>
+              
+              <div className="h-6 w-px bg-white/10 mx-2"></div>
+
+              <button onClick={() => window.location.hash = '#/careers'} className={`relative px-4 py-2 text-xs font-bold font-mono uppercase tracking-widest transition-colors text-ecliptix-orange hover:text-white`}>
                 Carrière
+              </button>
+              
+              <button onClick={() => scrollToSection('contact')} className={`ml-2 px-6 py-2 bg-white text-black font-bold text-xs uppercase tracking-widest rounded hover:bg-slate-200 transition-all flex items-center gap-2 shadow-lg shadow-white/10`}>
+                Contact <MessageSquare size={12} />
               </button>
             </div>
 
             <div className="md:hidden">
-              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-white p-2 border border-white/20 rounded">
+              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-white p-2 border border-white/20 rounded hover:bg-white/10 transition-colors">
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
@@ -410,17 +409,31 @@ export default function App() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden bg-black/95 border-b border-white/10 absolute w-full backdrop-blur-xl">
-            <div className="px-4 pt-4 pb-8 space-y-4 font-mono text-sm uppercase">
-              <button onClick={() => scrollToSection('hub')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Innovation Hub</button>
-              <button onClick={() => scrollToSection('services')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Services</button>
-              <button onClick={() => window.location.hash = '#/academy'} className="block w-full text-left px-4 py-3 border-l-2 border-purple-400 text-purple-400 hover:bg-white/5">Academy</button>
-              <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Mission</button>
-              <button onClick={() => window.location.hash = '#/journal'} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Journal</button>
-              <button onClick={() => window.location.hash = '#/podcast'} className="block w-full text-left px-4 py-3 border-l-2 border-cyan-400 text-cyan-400 hover:bg-white/5">Podcast</button>
-              <button onClick={() => window.location.hash = '#/team'} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5">Team</button>
-              <button onClick={() => window.location.hash = '#/careers'} className="block w-full text-left px-4 py-3 border-l-2 border-ecliptix-orange text-ecliptix-orange hover:bg-white/5">Carrière</button>
-              <button onClick={() => scrollToSection('contact')} className="block w-full text-left px-4 py-3 border-l-2 border-transparent text-slate-500 hover:text-white hover:bg-white/5">Comm Link</button>
+          <div className="md:hidden bg-black/95 border-b border-white/10 absolute w-full backdrop-blur-xl h-screen overflow-y-auto pb-32">
+            <div className="px-6 pt-8 pb-8 space-y-6 font-mono text-sm uppercase">
+              <div className="pb-4 border-b border-white/10">
+                 <p className="text-[10px] text-slate-500 mb-4 tracking-widest">Navigation Principale</p>
+                 <button onClick={() => scrollToSection('hub')} className="block w-full text-left py-3 text-lg font-bold text-white hover:text-ecliptix-orange transition-colors">Innovation Hub</button>
+                 <button onClick={() => scrollToSection('services')} className="block w-full text-left py-3 text-lg font-bold text-white hover:text-ecliptix-orange transition-colors">Services</button>
+                 <button onClick={() => window.location.hash = '#/academy'} className="block w-full text-left py-3 text-lg font-bold text-purple-400 hover:text-purple-300 transition-colors">Ecliptix Academy</button>
+              </div>
+              
+              <div className="pb-4 border-b border-white/10">
+                 <p className="text-[10px] text-slate-500 mb-4 tracking-widest">Contenu & Média</p>
+                 <button onClick={() => window.location.hash = '#/journal'} className="block w-full text-left py-2 text-slate-300 hover:text-white transition-colors">Journal de Bord</button>
+                 <button onClick={() => window.location.hash = '#/podcast'} className="block w-full text-left py-2 text-cyan-400 hover:text-cyan-300 transition-colors">Podcast Frequency</button>
+                 <button onClick={() => window.location.hash = '#/team'} className="block w-full text-left py-2 text-slate-300 hover:text-white transition-colors">L'Équipe</button>
+              </div>
+
+              <div>
+                 <p className="text-[10px] text-slate-500 mb-4 tracking-widest">Action</p>
+                 <button onClick={() => window.location.hash = '#/careers'} className="block w-full text-left py-3 text-ecliptix-orange hover:text-white border border-ecliptix-orange/30 rounded px-4 mb-4">
+                    Rejoindre l'équipe
+                 </button>
+                 <button onClick={() => scrollToSection('contact')} className="block w-full text-left py-4 bg-white text-black font-bold text-center rounded px-4 flex items-center justify-center gap-2">
+                    <Phone size={16} /> Contacter le QG
+                 </button>
+              </div>
             </div>
           </div>
         )}

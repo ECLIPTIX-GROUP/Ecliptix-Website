@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { BrainCircuit, Database, Lock, Code2, LineChart, Cpu, ArrowUpRight, MessageSquare, Mic, Rocket, BarChart3, Layers } from 'lucide-react';
+import { BrainCircuit, Database, Lock, Code2, LineChart, Cpu, ArrowUpRight, MessageSquare, Mic, Rocket, BarChart3, Layers, Check, Terminal, Activity, Wifi } from 'lucide-react';
 import { ServiceItem } from '../types';
 
 export const servicesData: ServiceItem[] = [
@@ -154,6 +155,25 @@ export const servicesData: ServiceItem[] = [
       "Coverage: End-to-End",
       "Alerting: Instantané"
     ]
+  },
+  {
+    id: "MOD-09",
+    title: "IoT Synapse",
+    description: "Maillage de capteurs intelligents connectant le physique au numérique.",
+    icon: <Wifi />,
+    fullDescription: "Le monde physique regorge de données invisibles. IoT Synapse déploie une infrastructure de capteurs interconnectés (LoRaWAN, 4G/5G) qui transforment votre environnement (Champs, Usines, Villes) en flux de données exploitables par nos algorithmes prédictifs.",
+    features: [
+      "Réseaux Mesh LoRaWAN",
+      "Monitoring Environnemental",
+      "Maintenance Prédictive",
+      "Edge AI Integration"
+    ],
+    techSpecs: [
+      "Protocol: MQTT / CoAP",
+      "Coverage: 15km",
+      "Battery: 5 Ans",
+      "Security: End-to-End"
+    ]
   }
 ];
 
@@ -163,48 +183,80 @@ interface ServicesProps {
 
 export const Services: React.FC<ServicesProps> = ({ onServiceClick }) => {
   return (
-    <section id="services" className="py-16 md:py-32 relative overflow-hidden">
+    <section id="services" className="py-24 relative overflow-hidden bg-black">
+        {/* Background Grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+        
+        {/* Ambient Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-ecliptix-orange/5 rounded-full blur-[120px] pointer-events-none"></div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="text-center mb-16 md:mb-24">
-           <div className="inline-block border border-white/20 px-4 py-1 rounded-full bg-white/5 backdrop-blur-md mb-6">
-             <span className="text-[10px] font-mono text-ecliptix-orange uppercase tracking-[0.3em]">Modules d'Expansion</span>
+        <div className="text-center mb-20">
+           <div className="inline-flex items-center gap-2 border border-ecliptix-orange/30 px-4 py-1 rounded-full bg-ecliptix-orange/5 backdrop-blur-md mb-6 animate-pulse-slow">
+             <Cpu size={14} className="text-ecliptix-orange" />
+             <span className="text-[10px] font-mono text-ecliptix-orange uppercase tracking-[0.3em]">Infrastructure Cognitive</span>
            </div>
-           <h2 className="text-3xl md:text-5xl font-bold text-white">Capacités Opérationnelles</h2>
+           <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">Capacités <span className="text-transparent bg-clip-text bg-gradient-to-r from-ecliptix-orange to-white">Opérationnelles</span></h2>
+           <p className="text-slate-400 font-light max-w-2xl mx-auto text-lg leading-relaxed">
+             Une suite de modules interconnectés conçus pour augmenter l'intelligence de votre organisation. Déployables à la demande.
+           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {servicesData.map((service, idx) => (
             <div 
               key={idx} 
               onClick={() => onServiceClick(service)}
-              className={`group relative p-6 hud-panel hover:bg-white/5 transition-all duration-500 animate-float cursor-pointer flex flex-col`}
-              style={{ animationDelay: `${idx * 0.2}s` }}
+              className="group relative bg-slate-900/40 border border-white/10 rounded-2xl overflow-hidden hover:bg-slate-900/80 transition-all duration-500 cursor-pointer flex flex-col h-full hover:border-ecliptix-orange/50 hover:shadow-[0_0_30px_rgba(251,146,60,0.1)]"
             >
-              {/* Corner Markers */}
-              <div className="absolute top-0 right-0 p-2 opacity-30 group-hover:opacity-100 transition-opacity">
-                 <div className="w-2 h-2 border-t border-r border-ecliptix-orange"></div>
+              {/* Active Corner */}
+              <div className="absolute top-0 right-0 p-3 opacity-30 group-hover:opacity-100 transition-opacity">
+                 <div className="flex gap-1">
+                    <div className="w-1 h-1 bg-ecliptix-orange rounded-full"></div>
+                    <div className="w-1 h-1 bg-ecliptix-orange rounded-full"></div>
+                    <div className="w-1 h-1 bg-ecliptix-orange rounded-full"></div>
+                 </div>
               </div>
 
-              {/* Icon Container */}
-              <div className="w-14 h-14 bg-slate-900/80 border border-white/10 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:border-ecliptix-orange group-hover:shadow-[0_0_15px_rgba(251,146,60,0.3)] transition-all duration-300">
-                {React.cloneElement(service.icon as React.ReactElement<any>, { size: 24, strokeWidth: 1.5 })}
-              </div>
-              
-              <h3 className="text-lg font-bold text-white mb-3 font-sans tracking-wide group-hover:text-ecliptix-orange transition-colors">
-                {service.title}
-              </h3>
-              
-              <p className="text-slate-400 text-xs leading-relaxed mb-6 font-light flex-1">
-                {service.description}
-              </p>
+              <div className="p-8 flex flex-col flex-1">
+                 
+                 {/* Icon Header */}
+                 <div className="mb-6 flex justify-between items-start">
+                    <div className="w-14 h-14 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center text-ecliptix-orange group-hover:scale-110 transition-transform duration-500 shadow-lg group-hover:shadow-ecliptix-orange/20 group-hover:bg-ecliptix-orange group-hover:text-black">
+                        {React.cloneElement(service.icon as React.ReactElement<any>, { size: 28, strokeWidth: 1.5 })}
+                    </div>
+                    <div className="px-2 py-1 bg-black/40 border border-white/10 rounded text-[9px] font-mono text-slate-500 uppercase tracking-wider group-hover:text-ecliptix-orange group-hover:border-ecliptix-orange/30 transition-colors">
+                       {service.id}
+                    </div>
+                 </div>
 
-              <div className="flex items-center justify-between border-t border-white/5 pt-4 mt-auto">
-                <span className="text-[10px] font-mono text-slate-500 uppercase">ACCESS MODULE</span>
-                <div className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-ecliptix-orange group-hover:border-ecliptix-orange transition-colors">
-                  <ArrowUpRight size={12} className="text-white group-hover:text-black" />
-                </div>
+                 <h3 className="text-xl font-bold text-white mb-3 group-hover:text-ecliptix-orange transition-colors">{service.title}</h3>
+                 
+                 <p className="text-slate-400 text-sm leading-relaxed mb-6 font-light">
+                    {service.description}
+                 </p>
+
+                 {/* Mini Features List */}
+                 <div className="space-y-2 mb-6 border-t border-dashed border-white/10 pt-4 mt-auto">
+                    {service.features.slice(0, 2).map((feat, i) => (
+                       <div key={i} className="flex items-center gap-2 text-xs text-slate-500 group-hover:text-slate-300 transition-colors">
+                          <Check size={12} className="text-green-500" />
+                          {feat}
+                       </div>
+                    ))}
+                 </div>
+
+                 {/* Tech Spec Tag */}
+                 <div className="flex items-center gap-2 text-[10px] font-mono text-slate-600 bg-black/20 p-2 rounded border border-white/5 group-hover:border-white/10 transition-colors">
+                    <Terminal size={10} />
+                    <span className="truncate">{service.techSpecs[0]}</span>
+                 </div>
+
               </div>
+
+              {/* Hover Bottom Bar */}
+              <div className="h-1 w-full bg-gradient-to-r from-transparent via-ecliptix-orange to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
             </div>
           ))}
         </div>

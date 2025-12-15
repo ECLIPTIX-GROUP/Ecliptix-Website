@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { ArrowRight, Satellite, Activity, ChevronDown } from 'lucide-react';
+import { ArrowRight, Satellite, Activity, ChevronDown, MessageSquare } from 'lucide-react';
 
 interface HeroProps {
   onDiscover: () => void;
@@ -82,27 +83,39 @@ export const Hero: React.FC<HeroProps> = ({ onDiscover, onOpenJournal }) => {
           </span>
         </h1>
         
-        {/* Slogan */}
-        <p className="text-lg md:text-2xl font-light text-slate-400 tracking-wide mb-12 max-w-2xl text-center leading-relaxed animate-[fadeIn_1.5s_ease-out] px-6">
-          Façonnez le futur. <span className="text-white font-semibold drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]">Éclipsez l'impossible.</span>
-        </p>
+        {/* Slogan & Intro */}
+        <div className="max-w-3xl text-center px-4 mb-12">
+           <p className="text-lg md:text-2xl font-light text-slate-400 tracking-wide mb-6 leading-relaxed animate-[fadeIn_1.5s_ease-out]">
+             Façonnez le futur. <span className="text-white font-semibold drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]">Éclipsez l'impossible.</span>
+           </p>
+           <p className="text-sm md:text-base text-slate-500 leading-relaxed font-light animate-[fadeIn_1.8s_ease-out] border-l-2 border-ecliptix-orange/50 pl-4 md:pl-0 md:border-l-0">
+             Le QG de l'Intelligence Artificielle et des Systèmes Autonomes en Afrique de l'Ouest. Nous déployons des Drones Agritech, des IA conversationnelles et des infrastructures cloud souveraines depuis Saint-Louis.
+           </p>
+        </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 w-full max-w-md md:max-w-none justify-center animate-[fadeIn_2s_ease-out]">
+        <div className="flex flex-col sm:flex-row gap-6 w-full max-w-md md:max-w-none justify-center animate-[fadeIn_2s_ease-out] items-center">
           <button 
             onClick={onDiscover}
-            className="group relative px-10 py-4 bg-white text-black font-bold text-sm uppercase tracking-widest hover:bg-slate-200 transition-all clip-path-polygon flex items-center justify-center gap-3 shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] hover:-translate-y-1"
+            className="group relative px-10 py-4 bg-white text-black font-bold text-sm uppercase tracking-widest hover:bg-slate-200 transition-all clip-path-polygon flex items-center justify-center gap-3 shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] hover:-translate-y-1 w-full sm:w-auto"
             style={{ clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)' }}
           >
              <span className="relative z-10 flex items-center gap-2">
-               Explorer <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+               Explorer nos Solutions <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
              </span>
           </button>
           
           <button 
-            onClick={onOpenJournal}
-            className="group px-10 py-4 bg-black/40 backdrop-blur-md border border-white/20 text-white font-mono text-xs uppercase tracking-widest hover:border-ecliptix-orange hover:text-ecliptix-orange transition-all duration-300 hover:shadow-[0_0_30px_rgba(251,146,60,0.2)] hover:-translate-y-1"
+            onClick={() => window.location.hash = '#/section/contact'}
+            className="group px-10 py-4 bg-ecliptix-orange text-black font-bold font-mono text-xs uppercase tracking-widest hover:bg-orange-500 transition-all duration-300 shadow-[0_0_30px_rgba(251,146,60,0.3)] hover:-translate-y-1 w-full sm:w-auto flex items-center justify-center gap-2"
             style={{ clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)' }}
+          >
+             <MessageSquare size={14} /> Contact
+          </button>
+
+          <button 
+            onClick={onOpenJournal}
+            className="group px-8 py-4 bg-black/40 backdrop-blur-md border border-white/20 text-white font-mono text-xs uppercase tracking-widest hover:border-white hover:text-white transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto"
           >
              Journal de bord
           </button>
