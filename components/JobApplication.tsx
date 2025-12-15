@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, Send, User, Briefcase, FileText, Linkedin, Github, Zap, MapPin, X, Loader2, Link } from 'lucide-react';
+import { ArrowLeft, Send, User, Briefcase, FileText, Linkedin, Github, Zap, MapPin, X, Loader2, Link, UploadCloud, Trash2, CheckCircle2 } from 'lucide-react';
 import { JobPosting } from '../types';
 import { submitForm } from '../utils/formService';
 
@@ -20,7 +20,26 @@ export const JobApplication: React.FC<JobApplicationProps> = ({ job, onBack, onS
     cvLink: '',
     motivationLink: ''
   });
+  
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [motivationFile, setMotivationFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Handlers for CV
+  const handleCvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setCvFile(e.target.files[0]);
+    }
+  };
+  const removeCvFile = () => setCvFile(null);
+
+  // Handlers for Motivation Letter
+  const handleMotivationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setMotivationFile(e.target.files[0]);
+    }
+  };
+  const removeMotivationFile = () => setMotivationFile(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,22 +48,35 @@ export const JobApplication: React.FC<JobApplicationProps> = ({ job, onBack, onS
     if (!formData.fullName.trim()) { alert("Veuillez renseigner votre Nom Complet."); return; }
     if (!formData.email.trim()) { alert("Veuillez renseigner votre Email."); return; }
     if (!formData.phone.trim()) { alert("Veuillez renseigner votre Téléphone."); return; }
-    if (!formData.cvLink.trim()) { alert("Veuillez fournir un lien vers votre CV (Drive, Dropbox, LinkedIn...)."); return; }
+    
+    // Validation CV (Fichier OU Lien requis)
+    if (!cvFile && !formData.cvLink.trim()) { 
+        alert("Veuillez fournir votre CV (Fichier PDF/Word ou Lien)."); 
+        return; 
+    }
     
     setIsSubmitting(true);
 
     const jobTitle = job ? job.title : "Candidature Spontanée";
     
-    const success = await submitForm({
-      Poste: jobTitle,
-      Candidat: formData.fullName,
-      Email: formData.email,
-      Telephone: formData.phone,
-      LinkedIn: formData.linkedin,
-      Portfolio: formData.portfolio,
-      Lien_CV: formData.cvLink,
-      Lien_Motivation: formData.motivationLink
-    }, `Candidature: ${jobTitle} - ${formData.fullName}`);
+    // Construction du FormData pour l'envoi de fichier
+    const submissionData = new FormData();
+    submissionData.append('Poste', jobTitle);
+    submissionData.append('Candidat', formData.fullName);
+    submissionData.append('Email', formData.email);
+    submissionData.append('Telephone', formData.phone);
+    submissionData.append('LinkedIn', formData.linkedin);
+    submissionData.append('Portfolio', formData.portfolio);
+    
+    // CV Data
+    if (cvFile) submissionData.append('CV_File', cvFile);
+    if (formData.cvLink) submissionData.append('Lien_CV', formData.cvLink);
+
+    // Motivation Data
+    if (motivationFile) submissionData.append('Lettre_Motivation_File', motivationFile);
+    if (formData.motivationLink) submissionData.append('Lien_Motivation', formData.motivationLink);
+
+    const success = await submitForm(submissionData, `Candidature: ${jobTitle} - ${formData.fullName}`);
 
     setIsSubmitting(false);
 
@@ -168,13 +200,132 @@ export const JobApplication: React.FC<JobApplicationProps> = ({ job, onBack, onS
                   </div>
                </div>
 
-               {/* Assets */}
-               <div className="space-y-6">
+               {/* DOCUMENTS SECTION */}
+               <div className="space-y-8">
                   <h3 className="text-xs font-mono font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2 border-b border-white/10 pb-2">
                     <FileText size={14} /> Documents & Liens
                   </h3>
                   
-                  <div className="space-y-2">
+                  {/* --- 1. CV Upload Section --- */}
+                  <div className="space-y-4">
+                      <label className="text-xs text-slate-400">Curriculum Vitae <span className="text-ecliptix-orange">*</span></label>
+                      
+                      {!cvFile ? (
+                          <div className="relative border-2 border-dashed border-white/10 bg-slate-900/50 rounded-xl p-8 text-center hover:border-ecliptix-orange/50 transition-all group cursor-pointer hover:bg-slate-900/80">
+                              <input 
+                                  type="file" 
+                                  accept=".pdf,.doc,.docx"
+                                  onChange={handleCvChange}
+                                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                              />
+                              <div className="flex flex-col items-center gap-3">
+                                  <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-ecliptix-orange/10 transition-colors">
+                                      <UploadCloud size={24} className="text-slate-400 group-hover:text-ecliptix-orange" />
+                                  </div>
+                                  <div>
+                                      <p className="text-sm font-bold text-white group-hover:text-ecliptix-orange transition-colors">
+                                          Importer CV
+                                      </p>
+                                      <p className="text-[10px] text-slate-500 mt-1">PDF, DOCX (Max 5MB)</p>
+                                  </div>
+                              </div>
+                          </div>
+                      ) : (
+                          <div className="flex items-center justify-between p-4 bg-ecliptix-orange/10 border border-ecliptix-orange/30 rounded-xl animate-[fadeIn_0.3s_ease-out]">
+                              <div className="flex items-center gap-3">
+                                  <div className="w-10 h-10 bg-ecliptix-orange text-black rounded-lg flex items-center justify-center">
+                                      <FileText size={20} />
+                                  </div>
+                                  <div>
+                                      <p className="text-white text-sm font-bold truncate max-w-[200px]">{cvFile.name}</p>
+                                      <p className="text-ecliptix-orange text-[10px] flex items-center gap-1"><CheckCircle2 size={10}/> Prêt</p>
+                                  </div>
+                              </div>
+                              <button 
+                                  type="button" 
+                                  onClick={removeCvFile}
+                                  className="p-2 hover:bg-white/10 rounded-full text-slate-400 hover:text-white transition-colors"
+                              >
+                                  <Trash2 size={18} />
+                              </button>
+                          </div>
+                      )}
+
+                      {!cvFile && (
+                        <div className="relative">
+                          <Link size={14} className="absolute left-4 top-4 text-slate-500" />
+                          <input 
+                            type="url" 
+                            value={formData.cvLink}
+                            onChange={e => setFormData({...formData, cvLink: e.target.value})}
+                            className="w-full bg-slate-900 border border-white/10 p-3 pl-10 text-white rounded focus:border-ecliptix-orange focus:ring-1 focus:ring-ecliptix-orange outline-none transition-all text-xs placeholder:text-slate-600"
+                            placeholder="Ou lien externe vers CV (Drive, Dropbox...)"
+                          />
+                        </div>
+                      )}
+                  </div>
+
+                  {/* --- 2. Motivation Letter Upload Section --- */}
+                  <div className="space-y-4 pt-4 border-t border-dashed border-white/5">
+                      <label className="text-xs text-slate-400">Lettre de Motivation <span className="text-slate-600">(Optionnel)</span></label>
+                      
+                      {!motivationFile ? (
+                          <div className="relative border-2 border-dashed border-white/10 bg-slate-900/50 rounded-xl p-8 text-center hover:border-blue-500/50 transition-all group cursor-pointer hover:bg-slate-900/80">
+                              <input 
+                                  type="file" 
+                                  accept=".pdf,.doc,.docx"
+                                  onChange={handleMotivationChange}
+                                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                              />
+                              <div className="flex flex-col items-center gap-3">
+                                  <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-blue-500/10 transition-colors">
+                                      <FileText size={24} className="text-slate-400 group-hover:text-blue-400" />
+                                  </div>
+                                  <div>
+                                      <p className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">
+                                          Importer Lettre
+                                      </p>
+                                      <p className="text-[10px] text-slate-500 mt-1">PDF, DOCX (Max 5MB)</p>
+                                  </div>
+                              </div>
+                          </div>
+                      ) : (
+                          <div className="flex items-center justify-between p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl animate-[fadeIn_0.3s_ease-out]">
+                              <div className="flex items-center gap-3">
+                                  <div className="w-10 h-10 bg-blue-500 text-white rounded-lg flex items-center justify-center">
+                                      <FileText size={20} />
+                                  </div>
+                                  <div>
+                                      <p className="text-white text-sm font-bold truncate max-w-[200px]">{motivationFile.name}</p>
+                                      <p className="text-blue-400 text-[10px] flex items-center gap-1"><CheckCircle2 size={10}/> Prêt</p>
+                                  </div>
+                              </div>
+                              <button 
+                                  type="button" 
+                                  onClick={removeMotivationFile}
+                                  className="p-2 hover:bg-white/10 rounded-full text-slate-400 hover:text-white transition-colors"
+                              >
+                                  <Trash2 size={18} />
+                              </button>
+                          </div>
+                      )}
+
+                      {!motivationFile && (
+                        <div className="relative">
+                          <Link size={14} className="absolute left-4 top-4 text-slate-500" />
+                          <input 
+                            type="url" 
+                            value={formData.motivationLink}
+                            onChange={e => setFormData({...formData, motivationLink: e.target.value})}
+                            className="w-full bg-slate-900 border border-white/10 p-3 pl-10 text-white rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all text-xs placeholder:text-slate-600"
+                            placeholder="Ou lien externe (Drive, Notion, Vidéo...)"
+                          />
+                        </div>
+                      )}
+                  </div>
+
+                  {/* --- 3. Portfolio Link --- */}
+                  <div className="space-y-2 pt-4 border-t border-dashed border-white/5">
                      <label className="text-xs text-slate-400">Portfolio / GitHub <span className="text-slate-600">(Optionnel)</span></label>
                      <div className="relative">
                         <Github size={16} className="absolute left-4 top-4 text-slate-500" />
@@ -186,38 +337,6 @@ export const JobApplication: React.FC<JobApplicationProps> = ({ job, onBack, onS
                           placeholder="github.com/..."
                         />
                      </div>
-                  </div>
-
-                  {/* CV Link Input (Replaces File Upload) */}
-                  <div className="space-y-2">
-                      <label className="text-xs text-slate-400">Lien vers CV (Google Drive, Dropbox...) <span className="text-ecliptix-orange">*</span></label>
-                      <div className="relative">
-                        <Link size={16} className="absolute left-4 top-4 text-slate-500" />
-                        <input 
-                          required
-                          type="url" 
-                          value={formData.cvLink}
-                          onChange={e => setFormData({...formData, cvLink: e.target.value})}
-                          className="w-full bg-slate-900 border border-white/10 p-4 pl-12 text-white rounded focus:border-ecliptix-orange focus:ring-1 focus:ring-ecliptix-orange outline-none transition-all"
-                          placeholder="https://drive.google.com/..."
-                        />
-                      </div>
-                      <p className="text-[10px] text-slate-500">Assurez-vous que le lien est accessible publiquement.</p>
-                  </div>
-
-                  {/* Cover Letter Link */}
-                  <div className="space-y-2">
-                      <label className="text-xs text-slate-400">Lien Lettre de Motivation <span className="text-slate-600">(Optionnel)</span></label>
-                      <div className="relative">
-                        <Link size={16} className="absolute left-4 top-4 text-slate-500" />
-                        <input 
-                          type="url" 
-                          value={formData.motivationLink}
-                          onChange={e => setFormData({...formData, motivationLink: e.target.value})}
-                          className="w-full bg-slate-900 border border-white/10 p-4 pl-12 text-white rounded focus:border-ecliptix-orange focus:ring-1 focus:ring-ecliptix-orange outline-none transition-all"
-                          placeholder="https://..."
-                        />
-                      </div>
                   </div>
                </div>
 
