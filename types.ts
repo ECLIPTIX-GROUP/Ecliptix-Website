@@ -1,3 +1,4 @@
+
 import { ReactNode } from 'react';
 
 export interface Message {
@@ -37,6 +38,13 @@ export interface ProductModule {
   specs?: { label: string; value: string }[];
 }
 
+export interface Challenge {
+  title: string;
+  description: string;
+  stat?: string;
+  icon?: ReactNode;
+}
+
 export interface ProductItem {
   id: string;
   title: string;
@@ -46,8 +54,13 @@ export interface ProductItem {
   themeColor: 'green' | 'blue' | 'purple' | 'orange';
   icon: ReactNode;
   modules: ProductModule[];
+  challenges: Challenge[]; // New field for landing page structure
   impactStats: { value: string; label: string }[];
   targetAudience: string;
+  // New strategic fields
+  mission?: string;
+  vision?: string;
+  productValues?: { title: string; description: string }[];
 }
 
 export interface JobPosting {

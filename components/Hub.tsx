@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Sprout, Satellite, Wifi, MessageSquare, Users, Plane, ArrowRight, Scan, PieChart, Crosshair, ArrowLeft, FlaskConical, HardHat, ShieldCheck, Hammer, ClipboardList, TrendingUp, Truck, PackageCheck } from 'lucide-react';
+import { Sprout, Satellite, Wifi, MessageSquare, Users, Plane, ArrowRight, Scan, PieChart, Crosshair, ArrowLeft, FlaskConical, HardHat, ShieldCheck, Hammer, ClipboardList, TrendingUp, Truck, PackageCheck, AlertTriangle, UserX, Droplets, TrendingDown, EyeOff, FileWarning, Clock } from 'lucide-react';
 import { ProductItem } from '../types';
 
 export const productsData: ProductItem[] = [
@@ -17,7 +17,40 @@ export const productsData: ProductItem[] = [
       { label: "Intrants Chimiques", value: "-90%" },
       { label: "Précision", value: "cm²" }
     ],
-    fullDescription: "PEST AI est une révolution pour l'agriculture africaine. Le projet répond à un enjeu majeur : jusqu’à 40 % des récoltes sont perdues chaque année en Afrique de l’Ouest, faute de diagnostic rapide et d’outils d’aide à la décision fiables.\n\nEn combinant Intelligence Artificielle, PESTFLY (notre flotte de drones autonomes), capteurs IoT et imagerie satellite (PestOrbite), PEST AI offre un écosystème complet : du diagnostic ultra-précis à l'action curative ciblée. Notre solution vise à démocratiser l’accès à l’agriculture de précision.",
+    mission: "Sécuriser l'avenir alimentaire de l'Afrique en armant chaque agriculteur d'une intelligence technologique de pointe, capable de détecter l'invisible et de prévenir les crises avant qu'elles ne surviennent.",
+    vision: "Bâtir un écosystème agricole souverain et résilient, où la donnée et la robotique transforment l'agriculture de subsistance en une industrie de précision, durable et économiquement viable pour les générations futures.",
+    productValues: [
+      { title: "Précision Chirurgicale", description: "Zéro gaspillage. Nous ciblons la maladie au centimètre près, réduisant drastiquement l'usage de produits chimiques." },
+      { title: "Souveraineté Technologique", description: "Des modèles d'IA entraînés sur nos sols, pour nos climats, maîtrisés par nos ingénieurs." },
+      { title: "Eco-Responsabilité", description: "Protéger la santé des sols et des hommes en remplaçant la chimie massive par l'intelligence ciblée." }
+    ],
+    challenges: [
+      {
+        title: "Pertes Massives",
+        description: "Jusqu'à 40% des récoltes sont perdues chaque année en Afrique de l'Ouest faute de détection précoce des maladies.",
+        stat: "40%",
+        icon: <TrendingDown />
+      },
+      {
+        title: "Diagnostic Inaccessible",
+        description: "Manque criant d'outils de diagnostic simples. Les agriculteurs ne peuvent pas identifier scientifiquement les pathologies.",
+        stat: "0 Outils",
+        icon: <EyeOff />
+      },
+      {
+        title: "Déficit d'Experts",
+        description: "Les techniciens agricoles sont trop peu nombreux pour couvrir les immenses surfaces cultivables.",
+        stat: "1/5000 Ratio",
+        icon: <UserX />
+      },
+      {
+        title: "Surcharge Chimique",
+        description: "Jusqu'à 30% du budget de la récolte part en produits chimiques, souvent mal utilisés, détruisant sols et santé.",
+        stat: "30% Coût",
+        icon: <Droplets />
+      }
+    ],
+    fullDescription: "Dans un contexte de volatilité climatique extrême et de pression démographique croissante, l'agriculture africaine se trouve à la croisée des chemins. PEST AI incarne la réponse technologique d'Ecliptix à cet impératif de souveraineté alimentaire.\n\nPlus qu'une simple application, PEST AI est une infrastructure cognitive complète qui fusionne l'intelligence artificielle prédictive, la robotique aérienne autonome (PESTFLY) et l'analyse satellitaire macroscopique. \n\nNotre approche révolutionne le paradigme agricole traditionnel : nous passons d'une logique curative et massive (traiter tout le champ quand le problème est visible) à une logique préventive et chirurgicale (détecter les signaux faibles et traiter uniquement la plante malade). Ce saut technologique permet non seulement de sauver les récoltes, mais aussi de restaurer la rentabilité des exploitations et de préserver les écosystèmes pour les décennies à venir.",
     modules: [
       {
         id: "MOD-PESTSCAN",
@@ -122,6 +155,32 @@ export const productsData: ProductItem[] = [
       { label: "Conversion", value: "+35%" },
       { label: "Canaux", value: "SMS / WhatsApp / Email" }
     ],
+    challenges: [
+      {
+        title: "Invisibilité Numérique",
+        description: "Les artisans et PME peinent à exister en ligne face aux géants, perdant 80% des opportunités locales.",
+        stat: "80% Perte",
+        icon: <EyeOff />
+      },
+      {
+        title: "Chaos Administratif",
+        description: "Gestion des clients sur carnet ou Excel. Perte d'information, oubli de relance et impayés.",
+        stat: "Admin Chaos",
+        icon: <FileWarning />
+      },
+      {
+        title: "Marketing Complexe",
+        description: "Les outils existants (Ads, SEO) sont trop complexes et chers pour l'entrepreneur individuel.",
+        stat: "Trop Cher",
+        icon: <TrendingUp />
+      },
+      {
+        title: "Temps Perdu",
+        description: "L'entrepreneur passe plus de temps à chercher des clients qu'à exercer son métier.",
+        stat: "-15h/sem",
+        icon: <Clock />
+      }
+    ],
     fullDescription: "LocalPro.AI est une plateforme intelligente développée par Ecliptix pour démocratiser la croissance digitale. Pensée pour les réalités africaines, elle rend la prospection et la fidélisation accessibles sans expertise technique.\n\nLa plateforme aide les entrepreneurs à trouver des clients locaux via un ciblage précis, à automatiser leurs campagnes de relance marketing sur les canaux les plus utilisés (WhatsApp, SMS) et à gérer leurs prospects via un mini CRM ultra-intuitif.",
     modules: [
       {
@@ -205,6 +264,32 @@ export const productsData: ProductItem[] = [
       { label: "Marge Nette", value: "+15%" },
       { label: "Traçabilité", value: "100%" }
     ],
+    challenges: [
+      {
+        title: "Coulage de Matériaux",
+        description: "Vols et pertes de matériaux (ciment, fer) sur les chantiers, impactant directement la marge.",
+        stat: "15% Perte",
+        icon: <AlertTriangle />
+      },
+      {
+        title: "Dérapage Planning",
+        description: "Retards chroniques dus à une mauvaise coordination et un manque de visibilité temps réel.",
+        stat: "+3 Mois",
+        icon: <Clock />
+      },
+      {
+        title: "Opacité Qualité",
+        description: "Difficulté pour les maîtres d'ouvrage de vérifier la qualité réelle et la conformité des travaux.",
+        stat: "Risque",
+        icon: <ShieldCheck />
+      },
+      {
+        title: "Reporting Archaïque",
+        description: "Rapports papier ou WhatsApp inexploitables pour une prise de décision stratégique.",
+        stat: "Data Perdue",
+        icon: <FileWarning />
+      }
+    ],
     fullDescription: "FASSI évolue pour devenir le système d'exploitation du BTP en Afrique. Plus qu'un simple outil de certification, c'est une tour de contrôle complète pour les entreprises de construction.\n\nElle permet de piloter l'avancement physique des travaux, de gérer les ressources (matériaux, main d'œuvre) et de garantir la qualité technique via des certifications digitales infalsifiables. FASSI réduit les retards, sécurise les marges et instaure un climat de confiance absolu entre maîtres d'ouvrage et entreprises.",
     modules: [
       {
@@ -286,7 +371,7 @@ interface HubProps {
 export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = false }) => {
   const pestAI = productsData[0];
   const localPro = productsData[1];
-  const fassi = productsData[2]; // FASSI is now at index 2
+  const fassi = productsData[2];
 
   const Container = isSection ? 'section' : 'div';
   const containerClasses = isSection 
@@ -296,7 +381,7 @@ export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = fa
   return (
     <Container id={isSection ? "hub" : undefined} className={containerClasses}>
       
-      {/* Background Ambience - Only for standalone page to avoid conflict with stars */}
+      {/* Background Ambience */}
       {!isSection && (
         <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <div className="absolute top-[20%] right-[-10%] w-[800px] h-[800px] bg-green-900/10 rounded-full blur-[100px]"></div>
@@ -361,7 +446,7 @@ export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = fa
               </div>
             </div>
 
-            {/* Preview Modules - 2x2 Grid for 4 modules */}
+            {/* Preview Modules */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-green-500/20 border-t border-green-500/20">
               {pestAI.modules.map((mod, idx) => (
                 <div key={idx} className="p-6 md:p-8 bg-slate-900/60 hover:bg-green-500/10 transition-colors h-full">
@@ -384,100 +469,47 @@ export const Hub: React.FC<HubProps> = ({ onProductClick, onBack, isSection = fa
           </div>
         </div>
 
-
-        {/* LOCALPRO.AI CARD */}
-        <div className="mb-16 md:mb-32 cursor-pointer group" onClick={() => onProductClick(localPro)}>
-          <div className="relative bg-slate-900/60 border border-blue-500/30 rounded-3xl overflow-hidden backdrop-blur-sm hover:border-blue-500/60 transition-colors duration-500 hover:shadow-[0_0_50px_rgba(59,130,246,0.1)]">
-            {/* Header Product */}
-            <div className="p-6 md:p-12 border-b border-blue-500/20 flex flex-col md:flex-row-reverse gap-8 items-start md:items-center justify-between bg-blue-950/20 group-hover:bg-blue-950/30 transition-colors">
-              <div className="flex flex-col-reverse md:flex-row items-start md:items-center gap-6 w-full md:w-auto">
-                <div className="text-left md:text-right">
-                  <h3 className="text-3xl font-bold text-white font-mono tracking-tight">{localPro.title}</h3>
-                  <p className="text-blue-400 font-mono text-xs uppercase tracking-widest mt-1">:: {localPro.subtitle} ::</p>
+        {/* LOCALPRO & FASSI (Compact) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="cursor-pointer group" onClick={() => onProductClick(localPro)}>
+                <div className="relative bg-slate-900/60 border border-blue-500/30 rounded-3xl overflow-hidden backdrop-blur-sm hover:border-blue-500/60 transition-all duration-500 hover:shadow-[0_0_50px_rgba(59,130,246,0.1)] h-full flex flex-col">
+                    <div className="p-8 border-b border-blue-500/20 flex items-start gap-6 bg-blue-950/20">
+                        <div className="w-20 h-20 rounded-xl bg-blue-900/30 border border-blue-500/50 flex items-center justify-center shrink-0">
+                            <img src="https://media.licdn.com/dms/image/v2/D4D0BAQEntAyOwWUb0g/company-logo_200_200/B4DZsUpxv2J8AQ-/0/1765578062500?e=1767225600&v=beta&t=Mt_nY4KO_x2cCiynGSOhv_rJUOymanuKLrNxxPytWGo" alt="LocalPro Logo" className="w-full h-full object-cover rounded-lg" />
+                        </div>
+                        <div>
+                            <h3 className="text-2xl font-bold text-white font-mono tracking-tight">{localPro.title}</h3>
+                            <p className="text-blue-400 font-mono text-xs uppercase tracking-widest mt-1 mb-2">{localPro.subtitle}</p>
+                            <p className="text-slate-400 text-xs leading-relaxed line-clamp-2">{localPro.description}</p>
+                        </div>
+                    </div>
+                    <div className="p-4 bg-blue-950/30 border-t border-blue-500/20 text-center mt-auto group-hover:bg-blue-500/20 transition-colors">
+                        <span className="text-xs font-mono text-blue-400 group-hover:text-white uppercase tracking-widest flex items-center justify-center gap-2">
+                            Découvrir <ArrowRight size={12} />
+                        </span>
+                    </div>
                 </div>
-                {/* LOGO */}
-                <div className="w-24 h-24 md:w-40 md:h-40 rounded-2xl bg-blue-900/30 border border-blue-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.2)] group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
-                  <img 
-                    src="https://media.licdn.com/dms/image/v2/D4D0BAQEntAyOwWUb0g/company-logo_200_200/B4DZsUpxv2J8AQ-/0/1765578062500?e=1767225600&v=beta&t=Mt_nY4KO_x2cCiynGSOhv_rJUOymanuKLrNxxPytWGo" 
-                    alt="LocalPro Logo" 
-                    className="w-full h-full object-cover" 
-                  />
-                </div>
-              </div>
-              <div className="text-left max-w-lg">
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  {localPro.description}
-                </p>
-              </div>
             </div>
 
-            {/* Preview Modules */}
-            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-blue-500/20">
-              {localPro.modules.map((mod, idx) => (
-                <div key={idx} className="p-6 md:p-8 hover:bg-blue-500/5 transition-colors">
-                  <div className="flex items-center gap-3 mb-4 text-blue-400">
-                    {React.cloneElement(mod.icon as React.ReactElement<any>, { size: 20 })}
-                    <h4 className="font-bold uppercase tracking-wider text-sm">{mod.title}</h4>
-                  </div>
-                  <p className="text-slate-400 text-xs line-clamp-3 leading-relaxed">
-                    {mod.description}
-                  </p>
+            <div className="cursor-pointer group" onClick={() => onProductClick(fassi)}>
+                <div className="relative bg-slate-900/60 border border-orange-500/30 rounded-3xl overflow-hidden backdrop-blur-sm hover:border-orange-500/60 transition-all duration-500 hover:shadow-[0_0_50px_rgba(249,115,22,0.1)] h-full flex flex-col">
+                    <div className="p-8 border-b border-orange-500/20 flex items-start gap-6 bg-orange-950/20">
+                        <div className="w-20 h-20 rounded-xl bg-orange-900/30 border border-orange-500/50 flex items-center justify-center shrink-0">
+                            <HardHat size={32} className="text-orange-400" />
+                        </div>
+                        <div>
+                            <h3 className="text-2xl font-bold text-white font-mono tracking-tight">{fassi.title}</h3>
+                            <p className="text-orange-400 font-mono text-xs uppercase tracking-widest mt-1 mb-2">{fassi.subtitle}</p>
+                            <p className="text-slate-400 text-xs leading-relaxed line-clamp-2">{fassi.description}</p>
+                        </div>
+                    </div>
+                    <div className="p-4 bg-orange-950/30 border-t border-orange-500/20 text-center mt-auto group-hover:bg-orange-500/20 transition-colors">
+                        <span className="text-xs font-mono text-orange-400 group-hover:text-white uppercase tracking-widest flex items-center justify-center gap-2">
+                            Découvrir <ArrowRight size={12} />
+                        </span>
+                    </div>
                 </div>
-              ))}
             </div>
-            
-             <div className="p-4 bg-blue-950/30 border-t border-blue-500/20 text-center group-hover:bg-blue-500/20 transition-colors">
-              <button className="text-xs font-mono text-blue-400 group-hover:text-white uppercase tracking-widest flex items-center justify-center gap-2 transition-colors">
-                Déployer maintenant <ArrowRight size={12} />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* FASSI CARD (ORANGE THEME) */}
-        <div className="cursor-pointer group" onClick={() => onProductClick(fassi)}>
-          <div className="relative bg-slate-900/60 border border-orange-500/30 rounded-3xl overflow-hidden backdrop-blur-sm hover:border-orange-500/60 transition-colors duration-500 hover:shadow-[0_0_50px_rgba(249,115,22,0.1)]">
-            
-            {/* Header Product */}
-            <div className="p-6 md:p-12 border-b border-orange-500/20 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between bg-orange-950/20 group-hover:bg-orange-950/30 transition-colors">
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-6 w-full md:w-auto">
-                <div className="w-24 h-24 md:w-40 md:h-40 rounded-2xl bg-orange-900/30 border border-orange-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(249,115,22,0.2)] group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
-                   <HardHat size={64} className="text-orange-400" />
-                </div>
-                <div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-white font-mono tracking-tight">{fassi.title}</h3>
-                  <p className="text-orange-400 font-mono text-xs md:text-sm uppercase tracking-widest mt-2">:: {fassi.subtitle} ::</p>
-                </div>
-              </div>
-              <div className="text-left md:text-right max-w-lg">
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  {fassi.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Preview Modules */}
-            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-orange-500/20">
-              {fassi.modules.map((mod, idx) => (
-                <div key={idx} className="p-6 md:p-8 hover:bg-orange-500/5 transition-colors">
-                  <div className="flex items-center gap-3 mb-4 text-orange-400">
-                    {React.cloneElement(mod.icon as React.ReactElement<any>, { size: 20 })}
-                    <h4 className="font-bold uppercase tracking-wider text-sm">{mod.title}</h4>
-                  </div>
-                  <p className="text-slate-400 text-xs line-clamp-3 leading-relaxed">
-                    {mod.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-            
-            <div className="p-4 bg-orange-950/30 border-t border-orange-500/20 text-center group-hover:bg-orange-500/20 transition-colors">
-              <button className="text-xs font-mono text-orange-400 group-hover:text-white uppercase tracking-widest flex items-center justify-center gap-2 transition-colors">
-                Piloter vos chantiers <ArrowRight size={12} />
-              </button>
-            </div>
-
-          </div>
         </div>
 
       </div>

@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, CheckCircle2, Zap, Clock, MapPin, User, Layers, Code2, Phone, Handshake, Cpu, FileText, Globe, Star, ArrowRight, Download, Printer, Sun, Wind, Droplets, LayoutDashboard, Scan, Sprout, BarChart3, ShoppingCart, MessageSquare, Settings, Bell, Search, Bot, Thermometer, Leaf, AlertTriangle, Calendar, Activity } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Zap, Clock, MapPin, User, Layers, Code2, Phone, Handshake, Cpu, FileText, Globe, Star, ArrowRight, Download, Printer, Sun, Wind, Droplets, LayoutDashboard, Scan, Sprout, BarChart3, ShoppingCart, MessageSquare, Settings, Bell, Search, Bot, Thermometer, Leaf, AlertTriangle, Calendar, Activity, Mail, Send, Loader2, Target, Lightbulb, ShieldCheck, Flag, Eye } from 'lucide-react';
 import { ProductItem, ProductModule } from '../types';
 import { DemoRequest } from './DemoRequest';
 import { SuccessPage } from './SuccessPage';
+import { submitForm } from '../utils/formService';
 
 interface ProductDetailProps {
   product: ProductItem;
@@ -14,6 +15,9 @@ interface ProductDetailProps {
 
 export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, onModuleClick, onRequestDemo }) => {
   const [showDownloadAnim, setShowDownloadAnim] = useState(false);
+  const [formState, setFormState] = useState({ name: '', email: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
   
   // Dynamic color classes based on theme
   const getTheme = () => {
@@ -24,8 +28,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
           bgAccent: 'bg-green-500', 
           border: 'border-green-500',
           gradientFrom: 'from-green-900/20',
-          printColor: '#22c55e',
-          shadow: 'shadow-green-500/20'
+          printColor: '#16a34a', // darker green for print legibility
+          printBg: '#f0fdf4',
+          shadow: 'shadow-green-500/20',
+          bgSoft: 'bg-green-500/10',
+          ring: 'focus:ring-green-500',
+          placeholder: 'placeholder:text-green-500/30'
         };
       case 'purple':
         return { 
@@ -33,8 +41,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
           bgAccent: 'bg-purple-500', 
           border: 'border-purple-500',
           gradientFrom: 'from-purple-900/20',
-          printColor: '#a855f7',
-          shadow: 'shadow-purple-500/20'
+          printColor: '#9333ea',
+          printBg: '#faf5ff',
+          shadow: 'shadow-purple-500/20',
+          bgSoft: 'bg-purple-500/10',
+          ring: 'focus:ring-purple-500',
+          placeholder: 'placeholder:text-purple-500/30'
         };
       case 'orange':
         return { 
@@ -42,8 +54,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
           bgAccent: 'bg-orange-500', 
           border: 'border-orange-500',
           gradientFrom: 'from-orange-900/20',
-          printColor: '#f97316',
-          shadow: 'shadow-orange-500/20'
+          printColor: '#ea580c',
+          printBg: '#fff7ed',
+          shadow: 'shadow-orange-500/20',
+          bgSoft: 'bg-orange-500/10',
+          ring: 'focus:ring-orange-500',
+          placeholder: 'placeholder:text-orange-500/30'
         };
       default: // blue
         return { 
@@ -51,8 +67,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
           bgAccent: 'bg-blue-500', 
           border: 'border-blue-500',
           gradientFrom: 'from-blue-900/20',
-          printColor: '#3b82f6',
-          shadow: 'shadow-blue-500/20'
+          printColor: '#2563eb',
+          printBg: '#eff6ff',
+          shadow: 'shadow-blue-500/20',
+          bgSoft: 'bg-blue-500/10',
+          ring: 'focus:ring-blue-500',
+          placeholder: 'placeholder:text-blue-500/30'
         };
     }
   };
@@ -64,7 +84,22 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
     setTimeout(() => {
       window.print();
       setShowDownloadAnim(false);
-    }, 1500);
+    }, 2000);
+  };
+
+  const handleQuickContact = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const success = await submitForm({
+      Produit: product.title,
+      ...formState
+    }, `Contact Rapide: ${product.title}`);
+    
+    setIsSubmitting(false);
+    if(success) {
+      setIsSent(true);
+      setFormState({ name: '', email: '', message: '' });
+    }
   };
 
   return (
@@ -132,283 +167,41 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
             </div>
           </div>
 
-          {/* PEST AI DASHBOARD PREVIEW INTEGRATION */}
-          {product.id === 'PROD-PEST' && (
-            <div className="mb-20">
-               <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2 flex items-center justify-center gap-2">
-                     <LayoutDashboard className="text-green-400" /> Interface de Commandement
-                  </h3>
-                  <p className="text-slate-400 text-sm">Aperçu en temps réel de la plateforme PEST AI V2.0</p>
-               </div>
+          {/* CHALLENGE / PROBLEM SECTION (Landing Page Style) */}
+          <div className="mb-20">
+             <div className="text-center mb-10">
+                <div className={`inline-flex items-center gap-2 border ${theme.border}/30 px-4 py-1 rounded-full ${theme.bgSoft} backdrop-blur-md mb-4`}>
+                   <AlertTriangle size={14} className={theme.accent} />
+                   <span className={`text-[10px] font-mono ${theme.accent} uppercase tracking-[0.3em]`}>Situation Critique</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white">Pourquoi cette <span className={`text-transparent bg-clip-text bg-gradient-to-r ${theme.gradientFrom.replace('/20','')} to-white`}>Solution ?</span></h2>
+             </div>
 
-               {/* BROWSER WINDOW CONTAINER */}
-               <div className="rounded-xl overflow-hidden border border-slate-700 bg-[#F3F4F6] shadow-2xl relative group">
-                  {/* Browser Bar */}
-                  <div className="bg-slate-800 px-4 py-2 flex items-center gap-2 border-b border-slate-700">
-                     <div className="flex gap-1.5">
-                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                     </div>
-                     <div className="flex-1 text-center">
-                        <div className="bg-slate-900/50 text-slate-400 text-[10px] font-mono py-1 px-4 rounded-full inline-block border border-white/5">
-                           platform.pest-ai.com/dashboard
-                        </div>
-                     </div>
-                  </div>
-
-                  {/* DASHBOARD UI REPLICA (Light Mode as per screenshot) */}
-                  <div className="flex text-slate-800 font-sans h-[600px] overflow-hidden relative overflow-x-auto">
-                     
-                     {/* Sidebar - Hidden on mobile */}
-                     <div className="w-64 bg-white border-r border-slate-200 flex-shrink-0 hidden md:flex flex-col sticky left-0 z-20 h-full">
-                        <div className="p-4 flex items-center gap-2 border-b border-slate-100">
-                           <img src="https://media.licdn.com/dms/image/v2/D4E0BAQF8aFwVyRfGHg/company-logo_200_200/B4EZU33xiUHcAI-/0/1740399123289?e=1767225600&v=beta&t=7D5Lb2mOY1FULswru3tiJqVGinxqcpTCjunP-CToiHI" className="w-8 h-8" alt="Logo"/>
-                           <span className="font-bold text-[#1b4d2e] text-lg">PEST AI</span>
-                        </div>
-                        <div className="p-4 space-y-1">
-                           <div className="flex items-center gap-3 p-3 bg-green-500 text-white rounded-lg shadow-lg shadow-green-500/20 cursor-pointer">
-                              <LayoutDashboard size={18} /> <span className="text-sm font-medium">Tableau de bord</span>
-                           </div>
-                           <div className="flex items-center gap-3 p-3 text-slate-500 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                              <Scan size={18} /> <span className="text-sm font-medium">Diagnostic PestScan</span>
-                           </div>
-                           <div className="flex items-center gap-3 p-3 text-slate-500 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                              <Globe size={18} /> <span className="text-sm font-medium">Imagerie Satellite</span>
-                           </div>
-                           <div className="flex items-center gap-3 p-3 text-slate-500 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                              <Sprout size={18} /> <span className="text-sm font-medium">Mes Cultures</span>
-                           </div>
-                           <div className="flex items-center gap-3 p-3 text-slate-500 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                              <BarChart3 size={18} /> <span className="text-sm font-medium">Suivi Rendement</span>
-                           </div>
-                           <div className="flex items-center gap-3 p-3 text-slate-500 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                              <FileText size={18} /> <span className="text-sm font-medium">Rapports</span>
-                           </div>
-                           <div className="flex items-center gap-3 p-3 text-slate-500 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                              <ShoppingCart size={18} /> <span className="text-sm font-medium">Marketplace</span>
-                           </div>
-                           <div className="flex items-center gap-3 p-3 text-slate-500 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                              <Bot size={18} /> <span className="text-sm font-medium">Parler avec Fary</span>
-                           </div>
-                        </div>
-                        <div className="mt-auto p-4 border-t border-slate-100">
-                           <div className="flex items-center gap-3 p-3 text-slate-400">
-                              <Settings size={18} /> <span className="text-sm">Paramètres</span>
-                           </div>
-                        </div>
-                     </div>
-
-                     {/* Main Content - Min width ensures horizontal scroll on mobile */}
-                     <div className="flex-1 bg-[#F9FAFB] flex flex-col overflow-y-auto min-w-[800px] md:min-w-0">
-                        
-                        {/* Top Bar */}
-                        <div className="bg-[#1b4d2e] text-white px-6 py-2 flex justify-between items-center text-xs sticky top-0 z-20">
-                           <div className="flex items-center gap-4">
-                              <span className="font-bold flex items-center gap-2"><Sun size={12} className="text-yellow-400"/> INFO CLIMAT :</span>
-                              <span className="opacity-90">Météo : Risque d'orage en fin de journée, sécurisez vos équipements.</span>
-                           </div>
-                           <div className="hidden md:flex items-center gap-4">
-                              <span className="flex items-center gap-2"><Sprout size={12} className="text-green-300"/> CONSEIL AGRONOMIQUE : En période de floraison, évitez les traitements...</span>
-                           </div>
-                        </div>
-
-                        {/* Header */}
-                        <div className="bg-white px-6 py-4 border-b border-slate-200 flex justify-between items-center sticky top-[32px] z-10">
-                           <div className="flex items-center gap-4">
-                               <div className="md:hidden"><LayoutDashboard /></div>
-                               <div className="flex items-center gap-4 text-sm text-slate-500">
-                                  <div className="flex items-center gap-1 bg-green-50 px-2 py-1 rounded border border-green-100 text-green-700">
-                                    <Scan size={14} /> 997 CD
-                                  </div>
-                                  <div className="flex items-center gap-1 bg-blue-50 px-2 py-1 rounded border border-blue-100 text-blue-700">
-                                    <Globe size={14} /> 39 CC
-                                  </div>
-                                  <div className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded border border-orange-100 text-orange-700">
-                                    <Zap size={14} /> 20 CDR
-                                  </div>
-                               </div>
-                           </div>
-                           
-                           <div className="flex items-center gap-6">
-                              <span className="text-xs text-slate-400 hidden sm:block">Support: Wolof • Bambara • Français</span>
-                              <ShoppingCart size={20} className="text-slate-400" />
-                              <div className="flex items-center gap-3 pl-6 border-l border-slate-200">
-                                 <div className="text-right hidden sm:block">
-                                    <div className="text-sm font-bold text-slate-700">GDS</div>
-                                    <div className="text-[10px] text-green-600 font-bold uppercase">AGROBUSINESS</div>
-                                 </div>
-                                 <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">G</div>
-                              </div>
-                           </div>
-                        </div>
-
-                        {/* Dashboard Body */}
-                        <div className="p-6 md:p-8 space-y-6">
-                           
-                           {/* Welcome */}
-                           <div className="flex justify-between items-end">
-                              <div>
-                                 <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                                    Bienvenue, GDS ! 👋 <span className="text-sm font-normal text-slate-400 border-l border-slate-300 pl-3">Dalal jamm ci sa espace !</span>
-                                 </h2>
-                                 <p className="text-slate-500 text-sm mt-1">Vue d'ensemble de votre exploitation.</p>
-                              </div>
-                              <div className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 flex items-center gap-2 shadow-sm">
-                                 <Calendar size={14} className="text-green-600"/> Dimanche 23 novembre 2025
-                              </div>
-                           </div>
-
-                           {/* Main Widgets */}
-                           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                              
-                              {/* Weather Card (Blue) */}
-                              <div className="lg:col-span-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
-                                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                                 <div className="flex justify-between items-start mb-8">
-                                    <div className="flex items-center gap-4">
-                                       <Sun size={48} className="text-yellow-300 animate-pulse" />
-                                       <div>
-                                          <div className="text-4xl font-bold">32°C</div>
-                                          <div className="text-blue-100 text-sm flex items-center gap-1"><Calendar size={12}/> Aujourd'hui</div>
-                                       </div>
-                                    </div>
-                                    <div className="text-right">
-                                       <div className="flex items-center gap-1 justify-end font-bold"><MapPin size={14}/> SAINT LOUIS</div>
-                                       <div className="text-blue-200 text-xs">Sénégal</div>
-                                    </div>
-                                 </div>
-                                 
-                                 <div className="grid grid-cols-3 gap-4 border-t border-white/20 pt-4">
-                                    <div className="text-center">
-                                       <div className="text-blue-200 text-xs uppercase mb-1 flex items-center justify-center gap-1"><Droplets size={12}/> Humidité</div>
-                                       <div className="font-bold text-lg">65%</div>
-                                    </div>
-                                    <div className="text-center border-l border-white/20">
-                                       <div className="text-blue-200 text-xs uppercase mb-1 flex items-center justify-center gap-1"><Wind size={12}/> Vent</div>
-                                       <div className="font-bold text-lg">12 km/h</div>
-                                    </div>
-                                    <div className="text-center border-l border-white/20">
-                                       <div className="text-blue-200 text-xs uppercase mb-1 flex items-center justify-center gap-1"><Thermometer size={12}/> Sol</div>
-                                       <div className="font-bold text-lg">28°C</div>
-                                    </div>
-                                 </div>
-                              </div>
-
-                              {/* Drone Card (Green) */}
-                              <div className="bg-[#1b4d2e] rounded-2xl p-6 text-white shadow-lg relative overflow-hidden flex flex-col justify-between">
-                                 <div className="absolute bottom-0 right-0 opacity-10 transform translate-x-4 translate-y-4">
-                                    <Scan size={120} />
-                                 </div>
-                                 <div>
-                                    <div className="flex items-center gap-2 text-green-200 text-sm mb-4">
-                                       <Zap size={14} /> Drone PestFly
-                                    </div>
-                                    <div className="text-5xl font-bold mb-1">0</div>
-                                    <div className="text-green-200 text-sm">Missions programmées</div>
-                                 </div>
-                                 <div className="mt-4 text-xs text-green-400 italic">
-                                    Aucune mission en cours.
-                                 </div>
-                              </div>
-
-                           </div>
-
-                           {/* Fary AI Assistant Bar */}
-                           <div className="bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl p-4 flex items-center justify-between shadow-lg text-white">
-                              <div className="flex items-center gap-4">
-                                 <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center border border-white/30">
-                                    <Bot size={24} />
-                                 </div>
-                                 <div>
-                                    <div className="font-bold flex items-center gap-2">
-                                       Fary - Assistant Agronome IA <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded text-white font-mono">BETA</span>
-                                    </div>
-                                    <div className="text-purple-100 text-xs mt-1 hidden sm:block">
-                                       Une question sur une maladie, un ravageur ou un traitement ? Discutez instantanément.
-                                    </div>
-                                 </div>
-                              </div>
-                              <button className="px-4 py-2 bg-white text-purple-600 rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm hover:bg-purple-50 transition-colors">
-                                 <Star size={14} /> Poser une question
-                              </button>
-                           </div>
-
-                           {/* Stats Row */}
-                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                              <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                                 <div className="flex justify-between items-start mb-2">
-                                    <span className="text-slate-400 text-xs font-bold uppercase">Diagnostics</span>
-                                    <Scan className="text-green-100" />
-                                 </div>
-                                 <div className="text-3xl font-bold text-slate-800">7</div>
-                                 <div className="text-xs text-green-600 mt-2 font-medium flex items-center gap-1">Nouveau scan <ArrowRight size={10}/></div>
-                              </div>
-                              <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                                 <div className="flex justify-between items-start mb-2">
-                                    <span className="text-slate-400 text-xs font-bold uppercase">À Risque</span>
-                                    <Activity className="text-red-100" />
-                                 </div>
-                                 <div className="text-3xl font-bold text-red-500">0</div>
-                                 <div className="text-xs text-slate-400 mt-2">Parcelles en stress</div>
-                              </div>
-                              <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                                 <div className="flex justify-between items-start mb-2">
-                                    <span className="text-slate-400 text-xs font-bold uppercase">Surface Totale</span>
-                                    <Layers className="text-blue-100" />
-                                 </div>
-                                 <div className="text-3xl font-bold text-slate-800">14665.2 <span className="text-sm font-normal text-slate-400">ha</span></div>
-                                 <div className="text-xs text-slate-400 mt-2">Objectif: 0 Tonnes</div>
-                              </div>
-                              <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                                 <div className="flex justify-between items-start mb-2">
-                                    <span className="text-slate-400 text-xs font-bold uppercase">Santé Globale</span>
-                                    <Leaf className="text-green-100" />
-                                 </div>
-                                 <div className="text-3xl font-bold text-green-500">100%</div>
-                                 <div className="w-full h-1.5 bg-slate-100 rounded-full mt-3 overflow-hidden">
-                                    <div className="w-full h-full bg-green-500"></div>
-                                 </div>
-                              </div>
-                           </div>
-                           
-                           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                              <div className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
-                                 <h3 className="font-bold text-slate-700 mb-4">Activité Récente</h3>
-                                 <div className="flex items-center justify-between p-3 bg-yellow-50 rounded border border-yellow-100">
-                                    <div className="flex items-center gap-3">
-                                       <div className="w-10 h-10 rounded bg-yellow-100 flex items-center justify-center text-yellow-600">
-                                          <AlertTriangle size={20} />
-                                       </div>
-                                       <div>
-                                          <div className="font-bold text-slate-700 text-sm">Panachure jaune du riz (RYMV)</div>
-                                          <div className="text-xs text-slate-500">Détecté il y a 2h</div>
-                                       </div>
-                                    </div>
-                                    <span className="text-[10px] font-bold bg-yellow-200 text-yellow-800 px-2 py-1 rounded">MEDIUM</span>
-                                 </div>
-                              </div>
-                              <div className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
-                                 <h3 className="font-bold text-slate-700 mb-4">Distribution Santé</h3>
-                                  <div className="flex items-center justify-center h-24 text-slate-300 text-sm italic">
-                                     Graphique de données...
-                                  </div>
-                              </div>
-                           </div>
-
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               
-               {/* Reflection/Shadow under the dashboard */}
-               <div className="mx-8 h-4 bg-ecliptix-orange/20 blur-xl rounded-full mt-2"></div>
-            </div>
-          )}
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {product.challenges?.map((challenge, idx) => (
+                   <div key={idx} className="bg-slate-900/50 border border-white/10 p-6 rounded-2xl relative overflow-hidden group hover:border-white/20 transition-all">
+                      <div className={`absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity ${theme.accent}`}>
+                         {React.isValidElement(challenge.icon) ? React.cloneElement(challenge.icon as React.ReactElement<any>, { size: 80 }) : null}
+                      </div>
+                      <div className={`w-12 h-12 rounded-lg ${theme.bgSoft} border ${theme.border}/20 flex items-center justify-center mb-4 ${theme.accent}`}>
+                         {challenge.icon}
+                      </div>
+                      <h3 className="text-lg font-bold text-white mb-2">{challenge.title}</h3>
+                      <p className="text-slate-400 text-xs leading-relaxed mb-4 min-h-[60px]">
+                         {challenge.description}
+                      </p>
+                      {challenge.stat && (
+                         <div className={`inline-block px-3 py-1 rounded border ${theme.border}/30 bg-black/40 text-xs font-mono font-bold ${theme.accent}`}>
+                            {challenge.stat}
+                         </div>
+                      )}
+                   </div>
+                ))}
+             </div>
+          </div>
 
           {/* Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
             
             {/* Main Description */}
             <div className="lg:col-span-2 space-y-12">
@@ -416,9 +209,52 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                   <Globe className={`${theme.accent}`} /> Vision Stratégique
                 </h3>
-                <p className="text-slate-400 leading-relaxed whitespace-pre-wrap">
+                <div className="text-slate-400 leading-relaxed whitespace-pre-wrap text-justify">
                   {product.fullDescription}
-                </p>
+                </div>
+
+                {/* Mission / Vision / Values - Visual Block */}
+                {(product.mission || product.vision || product.productValues) && (
+                   <div className="mt-12 bg-slate-900/50 border border-white/10 rounded-2xl p-8 space-y-8">
+                      {product.mission && (
+                         <div>
+                            <h4 className={`text-sm font-bold uppercase tracking-widest ${theme.accent} mb-3 flex items-center gap-2`}>
+                               <Flag size={16} /> Mission
+                            </h4>
+                            <p className="text-white font-medium italic leading-relaxed border-l-2 border-white/20 pl-4">
+                               "{product.mission}"
+                            </p>
+                         </div>
+                      )}
+                      
+                      {product.vision && (
+                         <div>
+                            <h4 className={`text-sm font-bold uppercase tracking-widest ${theme.accent} mb-3 flex items-center gap-2`}>
+                               <Eye size={16} /> Vision
+                            </h4>
+                            <p className="text-slate-300 text-sm leading-relaxed">
+                               {product.vision}
+                            </p>
+                         </div>
+                      )}
+
+                      {product.productValues && (
+                         <div>
+                            <h4 className={`text-sm font-bold uppercase tracking-widest ${theme.accent} mb-4 flex items-center gap-2`}>
+                               <ShieldCheck size={16} /> Valeurs Fondamentales
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                               {product.productValues.map((val, idx) => (
+                                  <div key={idx} className="bg-black/30 p-4 rounded-lg border border-white/5">
+                                     <div className="font-bold text-white text-xs mb-2">{val.title}</div>
+                                     <p className="text-[10px] text-slate-400 leading-normal">{val.description}</p>
+                                  </div>
+                               ))}
+                            </div>
+                         </div>
+                      )}
+                   </div>
+                )}
               </div>
 
               {/* Modules Breakdown */}
@@ -502,6 +338,150 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
             </div>
 
           </div>
+
+          {/* PRODUCT FOOTER / CONTACT & FORM */}
+          <div className={`mt-20 border-t border-${theme.border}/30 pt-12`}>
+             <div className={`rounded-3xl bg-slate-900/50 border border-${theme.border}/20 relative overflow-hidden`}>
+                {/* Background Decor */}
+                <div className={`absolute top-0 right-0 w-64 h-64 ${theme.bgAccent} opacity-5 rounded-full blur-[80px]`}></div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                   {/* Left Col: Info & Map */}
+                   <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 flex flex-col h-full">
+                      <div className="mb-8">
+                         <h3 className="text-2xl font-bold text-white mb-2">Centre d'Opérations</h3>
+                         <p className="text-slate-400 text-sm">
+                           Nos équipes techniques sont basées à Saint-Louis et opèrent dans toute la sous-région.
+                         </p>
+                      </div>
+                      
+                      <div className="space-y-6 mb-8">
+                         <div className="flex items-center gap-4">
+                            <div className={`w-10 h-10 rounded-lg ${theme.bgSoft} border ${theme.border}/20 flex items-center justify-center ${theme.accent}`}>
+                               <Phone size={18} />
+                            </div>
+                            <div>
+                               <div className="text-[10px] font-mono text-slate-500 uppercase">Ligne Directe</div>
+                               <div className="text-white font-bold text-sm">+221 78 436 35 37</div>
+                            </div>
+                         </div>
+                         
+                         <div className="flex items-center gap-4">
+                            <div className={`w-10 h-10 rounded-lg ${theme.bgSoft} border ${theme.border}/20 flex items-center justify-center ${theme.accent}`}>
+                               <Mail size={18} />
+                            </div>
+                            <div>
+                               <div className="text-[10px] font-mono text-slate-500 uppercase">Support Technique</div>
+                               <div className="text-white font-bold text-sm">contact@ecliptix.tech</div>
+                               {product.id === 'PROD-PEST' && (
+                                  <div className="text-white font-bold text-sm mt-1 text-green-400">contact.pestai@gmail.com</div>
+                               )}
+                            </div>
+                         </div>
+
+                         <div className="flex items-center gap-4">
+                            <div className={`w-10 h-10 rounded-lg ${theme.bgSoft} border ${theme.border}/20 flex items-center justify-center ${theme.accent}`}>
+                               <MapPin size={18} />
+                            </div>
+                            <div>
+                               <div className="text-[10px] font-mono text-slate-500 uppercase">QG Opérationnel</div>
+                               <div className="text-white font-bold text-sm">Cité Vauvert, Saint-Louis, Sénégal</div>
+                            </div>
+                         </div>
+                      </div>
+
+                      {/* Map */}
+                      <div className="relative h-48 w-full rounded-xl overflow-hidden border border-white/10 bg-slate-800 group mt-auto">
+                         <iframe 
+                            width="100%" 
+                            height="100%" 
+                            frameBorder="0" 
+                            title="Ecliptix Location"
+                            scrolling="no" 
+                            marginHeight={0} 
+                            marginWidth={0} 
+                            src="https://maps.google.com/maps?q=16.034590,-16.468224&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            style={{ filter: 'grayscale(100%) invert(100%) contrast(85%) brightness(80%)' }}
+                            className="w-full h-full opacity-60 group-hover:opacity-100 transition-opacity duration-700"
+                         ></iframe>
+                         <div className={`absolute bottom-3 left-3 px-2 py-1 bg-black/80 border ${theme.border}/30 rounded text-[9px] font-mono ${theme.accent} uppercase tracking-wider backdrop-blur-md`}>
+                            Base Ops
+                         </div>
+                      </div>
+                   </div>
+
+                   {/* Right Col: Quick Form */}
+                   <div className="p-8 md:p-12 relative">
+                      {isSent ? (
+                         <div className="h-full flex flex-col items-center justify-center text-center">
+                            <div className={`w-20 h-20 rounded-full ${theme.bgSoft} flex items-center justify-center border ${theme.border}/30 mb-6`}>
+                               <CheckCircle2 size={40} className={theme.accent} />
+                            </div>
+                            <h3 className="text-xl font-bold text-white mb-2">Message Transmis</h3>
+                            <p className="text-slate-400 text-sm mb-6">Nos ingénieurs analysent votre requête.</p>
+                            <button onClick={() => setIsSent(false)} className={`text-xs font-mono uppercase ${theme.accent} hover:text-white underline`}>Envoyer un autre message</button>
+                         </div>
+                      ) : (
+                         <form onSubmit={handleQuickContact} className="space-y-5">
+                            <div className="mb-6">
+                               <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                                  <MessageSquare size={20} className={theme.accent} /> Contact Rapide
+                               </h3>
+                               <p className="text-slate-400 text-xs">
+                                  Une question sur {product.title} ? Envoyez un signal immédiat.
+                               </p>
+                            </div>
+
+                            <div className="space-y-1">
+                               <label className="text-[10px] font-mono text-slate-500 uppercase">Identifiant</label>
+                               <input 
+                                 type="text" 
+                                 required
+                                 value={formState.name}
+                                 onChange={e => setFormState({...formState, name: e.target.value})}
+                                 className={`w-full bg-black/30 border border-white/10 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-${theme.border} focus:ring-1 ${theme.ring} transition-all ${theme.placeholder}`}
+                                 placeholder="Votre Nom"
+                               />
+                            </div>
+
+                            <div className="space-y-1">
+                               <label className="text-[10px] font-mono text-slate-500 uppercase">Point de Contact</label>
+                               <input 
+                                 type="email" 
+                                 required
+                                 value={formState.email}
+                                 onChange={e => setFormState({...formState, email: e.target.value})}
+                                 className={`w-full bg-black/30 border border-white/10 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-${theme.border} focus:ring-1 ${theme.ring} transition-all ${theme.placeholder}`}
+                                 placeholder="email@entreprise.com"
+                               />
+                            </div>
+
+                            <div className="space-y-1">
+                               <label className="text-[10px] font-mono text-slate-500 uppercase">Message</label>
+                               <textarea 
+                                 required
+                                 rows={4}
+                                 value={formState.message}
+                                 onChange={e => setFormState({...formState, message: e.target.value})}
+                                 className={`w-full bg-black/30 border border-white/10 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-${theme.border} focus:ring-1 ${theme.ring} transition-all resize-none ${theme.placeholder}`}
+                                 placeholder={`Je souhaite en savoir plus sur ${product.title}...`}
+                               ></textarea>
+                            </div>
+
+                            <button 
+                              type="submit" 
+                              disabled={isSubmitting}
+                              className={`w-full py-3 ${theme.bgAccent} hover:opacity-90 text-black font-bold uppercase tracking-widest text-xs rounded-lg transition-all flex items-center justify-center gap-2 mt-2`}
+                            >
+                               {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <><Send size={16} /> Envoyer Signal</>}
+                            </button>
+                         </form>
+                      )}
+                   </div>
+                </div>
+             </div>
+          </div>
+
         </div>
 
         {/* DOWNLOAD ANIMATION OVERLAY */}
@@ -509,13 +489,16 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 animate-[fadeIn_0.3s_ease-out]">
              <div className="text-center max-w-md px-4 relative">
                 <div className={`w-20 h-20 border-4 border-t-${product.themeColor === 'green' ? 'green-500' : product.themeColor === 'purple' ? 'purple-500' : product.themeColor === 'orange' ? 'orange-500' : 'blue-500'} border-r-transparent border-b-${product.themeColor === 'green' ? 'green-500' : product.themeColor === 'purple' ? 'purple-500' : product.themeColor === 'orange' ? 'orange-500' : 'blue-500'} border-l-transparent rounded-full animate-spin mx-auto mb-8`}></div>
-                <h3 className="text-2xl font-mono text-white uppercase tracking-widest animate-pulse mb-2">Génération...</h3>
+                <h3 className="text-2xl font-mono text-white uppercase tracking-widest animate-pulse mb-2">Génération du PDF...</h3>
                 <div className="bg-slate-800/80 p-6 rounded-xl text-left border border-white/10 mt-8">
-                   <p className="text-white font-bold text-sm mb-2">Instructions d'Impression :</p>
-                   <ul className="list-disc pl-5 text-slate-400 text-xs space-y-2">
-                      <li>Sélectionnez <strong>"Enregistrer au format PDF"</strong>.</li>
-                      <li>Assurez-vous que <strong>"Graphiques d'arrière-plan"</strong> est coché dans les options avancées.</li>
-                   </ul>
+                   <p className="text-white font-bold text-sm mb-2 flex items-center gap-2">
+                      <Download size={16} className={theme.accent} /> Instructions de Téléchargement :
+                   </p>
+                   <ol className="list-decimal pl-5 text-slate-400 text-xs space-y-2">
+                      <li>La fenêtre d'impression va s'ouvrir automatiquement.</li>
+                      <li>Dans "Destination", sélectionnez <strong>"Enregistrer au format PDF"</strong> (ou "Save as PDF").</li>
+                      <li>Cliquez sur <strong>Enregistrer</strong> pour télécharger le fichier sur votre appareil.</li>
+                   </ol>
                 </div>
              </div>
           </div>
@@ -523,62 +506,172 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, o
 
       </div>
 
-      {/* PRINT LAYOUT */}
-      <div className="print-only font-sans bg-white text-black">
-         <div className="flex justify-between items-center border-b-2 border-slate-200 pb-8 mb-8">
+      {/* PRINT LAYOUT - BROCHURE STYLE */}
+      <div className="print-only font-sans bg-white text-black p-0 m-0 w-full h-full absolute top-0 left-0 z-[9999]">
+         
+         {/* Brochure Header */}
+         <div className="flex justify-between items-center p-8 border-b-4" style={{ borderColor: theme.printColor, backgroundColor: theme.printBg }}>
             <div className="flex items-center gap-6">
-               <img src="https://media.licdn.com/dms/image/v2/D4E0BAQEDRW1wrkNA2g/company-logo_200_200/B4EZn_LZ1.GoAI-/0/1760922804191/ecliptix_group_logo?e=1766620800&v=beta&t=OGsYnzsuE3yGLA6ETAM_rzujDpAqoM2_kEmwBpr8Q44" alt="Ecliptix" className="h-20 w-auto" />
-               <div className="h-16 w-px bg-slate-300"></div>
-               {/* Use text or colored block if image fails, but try to use icon/image */}
-               <h1 className="text-4xl font-bold text-slate-900" style={{ color: theme.printColor }}>{product.title}</h1>
+               {/* Product Logo (Left) */}
+               {React.isValidElement(product.icon) && product.icon.type === 'img' ? (
+                  <div className="h-20 w-20 rounded-xl overflow-hidden bg-white shadow-sm border border-slate-200">
+                     {product.icon}
+                  </div>
+               ) : (
+                  <div className="h-20 w-20 rounded-xl bg-white border border-slate-200 flex items-center justify-center" style={{ color: theme.printColor }}>
+                     {React.cloneElement(product.icon as React.ReactElement<any>, { size: 40 })}
+                  </div>
+               )}
+               
+               <div>
+                  <h1 className="text-4xl font-bold tracking-tight text-slate-900 mb-1">{product.title}</h1>
+                  <p className="text-sm font-mono uppercase tracking-widest font-bold" style={{ color: theme.printColor }}>{product.subtitle}</p>
+               </div>
             </div>
-            <div className="text-right">
-               <div className="text-sm font-mono uppercase tracking-widest font-bold" style={{ color: theme.printColor }}>{product.subtitle}</div>
+
+            {/* Ecliptix Logo (Right) */}
+            <div className="text-right flex flex-col items-end">
+               <img src="https://media.licdn.com/dms/image/v2/D4E0BAQEDRW1wrkNA2g/company-logo_200_200/B4EZn_LZ1.GoAI-/0/1760922804191/ecliptix_group_logo?e=1766620800&v=beta&t=OGsYnzsuE3yGLA6ETAM_rzujDpAqoM2_kEmwBpr8Q44" alt="Ecliptix" className="h-12 w-auto mb-2" />
+               <span className="text-[10px] text-slate-500 uppercase tracking-widest">Solutions Technologiques Avancées</span>
             </div>
          </div>
 
-         <div className="mb-12 flex gap-12 items-start">
-            <div className="flex-1">
-               <h2 className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-4 border-b border-slate-200 pb-2">Description</h2>
-               <p className="text-slate-800 text-sm leading-relaxed text-justify">{product.fullDescription}</p>
+         <div className="p-8">
+            
+            {/* Section 1: Strategic Framework (New) */}
+            {(product.mission || product.vision) && (
+               <div className="mb-12 p-6 bg-slate-50 border-l-4 rounded-r-lg" style={{ borderColor: theme.printColor }}>
+                  <h2 className="text-lg font-bold uppercase tracking-widest mb-4 flex items-center gap-2" style={{ color: theme.printColor }}>
+                     <Globe size={18} /> Cadre Stratégique
+                  </h2>
+                  <div className="grid grid-cols-2 gap-8">
+                     {product.mission && (
+                        <div>
+                           <h4 className="text-xs font-bold uppercase mb-2 text-slate-600">Notre Mission</h4>
+                           <p className="text-sm text-slate-800 leading-relaxed italic">"{product.mission}"</p>
+                        </div>
+                     )}
+                     {product.vision && (
+                        <div>
+                           <h4 className="text-xs font-bold uppercase mb-2 text-slate-600">Notre Vision</h4>
+                           <p className="text-sm text-slate-800 leading-relaxed">{product.vision}</p>
+                        </div>
+                     )}
+                  </div>
+               </div>
+            )}
+
+            {/* Section 2: Context & Solution */}
+            <div className="mb-12 break-inside-avoid">
+               <div className="flex gap-8">
+                  <div className="flex-1">
+                     <h2 className="text-lg font-bold uppercase tracking-widest mb-4 flex items-center gap-3 border-b border-slate-200 pb-2" style={{ color: theme.printColor }}>
+                        <Lightbulb size={20} /> Solution & Approche
+                     </h2>
+                     <p className="text-slate-800 text-sm leading-relaxed text-justify mb-4">{product.fullDescription}</p>
+                     
+                     {/* Values Grid in Print */}
+                     {product.productValues && (
+                        <div className="grid grid-cols-3 gap-3 mt-4">
+                           {product.productValues.map((val, idx) => (
+                              <div key={idx} className="bg-white border border-slate-200 p-2 rounded">
+                                 <h5 className="font-bold text-[10px] uppercase mb-1" style={{ color: theme.printColor }}>{val.title}</h5>
+                                 <p className="text-[9px] text-slate-600 leading-tight">{val.description}</p>
+                              </div>
+                           ))}
+                        </div>
+                     )}
+                  </div>
+                  
+                  {/* Key Stats Side Panel */}
+                  <div className="w-64 shrink-0 bg-slate-50 p-6 rounded-xl border border-slate-200 h-fit">
+                     <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">Impact Mesuré</h2>
+                     <div className="space-y-4">
+                        {product.impactStats.map((stat, idx) => (
+                        <div key={idx} className="flex justify-between items-baseline border-b border-slate-200 pb-2">
+                           <span className="text-xs font-medium text-slate-600">{stat.label}</span>
+                           <span className="text-lg font-bold" style={{ color: theme.printColor }}>{stat.value}</span>
+                        </div>
+                        ))}
+                     </div>
+                  </div>
+               </div>
             </div>
-            <div className="w-72 shrink-0 p-6 bg-slate-50 rounded-xl border border-slate-200">
-               <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">Impact Clé</h2>
-               <div className="space-y-4">
-                  {product.impactStats.map((stat, idx) => (
-                    <div key={idx} className="flex justify-between items-baseline border-b border-slate-200 pb-2">
-                       <span className="text-xs font-medium text-slate-600">{stat.label}</span>
-                       <span className="text-lg font-bold" style={{ color: theme.printColor }}>{stat.value}</span>
-                    </div>
+
+            {/* Section 3: Challenges */}
+            <div className="mb-12 break-inside-avoid">
+               <h2 className="text-lg font-bold uppercase tracking-widest mb-6 flex items-center gap-3 border-b border-slate-200 pb-2" style={{ color: theme.printColor }}>
+                  <AlertTriangle size={20} /> Contexte & Enjeux
+               </h2>
+               <div className="grid grid-cols-2 gap-6">
+                  {product.challenges?.map((challenge, idx) => (
+                     <div key={idx} className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                        <h3 className="font-bold text-slate-800 text-sm mb-2">{challenge.title}</h3>
+                        <p className="text-xs text-slate-600 leading-relaxed">{challenge.description}</p>
+                        {challenge.stat && (
+                           <div className="mt-2 text-xs font-bold" style={{ color: theme.printColor }}>Impact: {challenge.stat}</div>
+                        )}
+                     </div>
                   ))}
                </div>
             </div>
-         </div>
 
-         <div className="mb-12">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-6 border-b border-slate-200 pb-2">Architecture & Modules</h2>
-            <div className="grid grid-cols-2 gap-8">
-               {product.modules.map((mod, idx) => (
-                  <div key={idx} className="border border-slate-200 rounded-lg p-6 break-inside-avoid shadow-sm">
-                     <h3 className="font-bold text-slate-900 text-base mb-1">{mod.title}</h3>
-                     <p className="text-[10px] font-mono uppercase text-slate-500 mb-2" style={{ color: theme.printColor }}>{mod.subtitle}</p>
-                     <p className="text-xs text-slate-600 leading-relaxed">{mod.description}</p>
-                  </div>
-               ))}
+            {/* Section 4: Modules */}
+            <div className="mb-12 break-inside-avoid">
+               <h2 className="text-lg font-bold uppercase tracking-widest mb-6 flex items-center gap-3 border-b border-slate-200 pb-2" style={{ color: theme.printColor }}>
+                  <Layers size={20} /> Architecture & Modules
+               </h2>
+               <div className="grid grid-cols-2 gap-6">
+                  {product.modules.map((mod, idx) => (
+                     <div key={idx} className="border border-slate-200 rounded-lg p-5 shadow-sm bg-white break-inside-avoid">
+                        <div className="flex items-center gap-3 mb-2">
+                           <div style={{ color: theme.printColor }}>
+                              {React.cloneElement(mod.icon as React.ReactElement<any>, { size: 18 })}
+                           </div>
+                           <h3 className="font-bold text-slate-900 text-sm">{mod.title}</h3>
+                        </div>
+                        <p className="text-xs text-slate-600 leading-relaxed mb-2">{mod.description}</p>
+                     </div>
+                  ))}
+               </div>
             </div>
+
+            {/* Section 5: Targets */}
+            <div className="mb-8 p-6 rounded-lg bg-slate-50 border border-slate-200 break-inside-avoid flex items-center gap-6">
+               <div className="p-3 rounded-full bg-white border border-slate-200" style={{ color: theme.printColor }}>
+                  <Target size={24} />
+               </div>
+               <div>
+                  <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest mb-2">Cibles & Bénéficiaires</h3>
+                  <p className="text-sm font-medium text-slate-800">{product.targetAudience}</p>
+               </div>
+            </div>
+
          </div>
 
-         <div className="fixed bottom-0 left-0 w-full p-8 border-t-2 border-slate-800 bg-white">
+         {/* Brochure Footer */}
+         <div className="fixed bottom-0 left-0 w-full p-8 border-t-4 bg-white" style={{ borderColor: theme.printColor }}>
             <div className="flex justify-between items-end">
                <div className="text-xs text-slate-600 space-y-1">
-                  <div>Ecliptix SASU - Saint-Louis, SENEGAL</div>
-                  <div>contact@ecliptix.tech</div>
+                  <div className="font-bold text-slate-800 uppercase tracking-wider mb-2">Ecliptix SASU</div>
+                  <div className="flex flex-col gap-1">
+                     <span className="flex items-center gap-2"><MapPin size={10}/> Cité Vauvert, Saint-Louis, SENEGAL</span>
+                     <span className="flex items-center gap-2"><Phone size={10}/> +221 78 436 35 37</span>
+                     <div className="flex items-center gap-4">
+                        <span className="flex items-center gap-2"><Mail size={10}/> contact@ecliptix.tech</span>
+                        {product.id === 'PROD-PEST' && (
+                           <span className="flex items-center gap-2 font-bold" style={{ color: theme.printColor }}><Mail size={10}/> contact.pestai@gmail.com</span>
+                        )}
+                     </div>
+                  </div>
                </div>
                <div className="text-right">
-                  <div className="text-xl font-bold tracking-tight text-slate-800">ECLIPTIX</div>
+                  <div className="text-2xl font-bold tracking-tight text-slate-900">ECLIPTIX</div>
+                  <div className="text-[8px] uppercase tracking-[0.3em] font-bold" style={{ color: theme.printColor }}>Innovation Lab</div>
                </div>
             </div>
          </div>
+
       </div>
     </>
   );
