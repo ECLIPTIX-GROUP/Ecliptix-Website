@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -52,7 +51,6 @@
               'spin-reverse': 'reverse-spin 80s linear infinite',
               'twinkle': 'twinkle 4s ease-in-out infinite',
               'grid-flow': 'gridFlow 20s linear infinite',
-              'marquee': 'marquee 40s linear infinite',
             },
             keyframes: {
               float: {
@@ -70,10 +68,6 @@
               gridFlow: {
                 '0%': { transform: 'translateY(0)' },
                 '100%': { transform: 'translateY(40px)' },
-              },
-              marquee: {
-                '0%': { transform: 'translateX(0)' },
-                '100%': { transform: 'translateX(-50%)' },
               }
             }
           },
@@ -281,10 +275,12 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div class="noise-overlay"></div>
     <div class="vignette-overlay"></div>
     <div id="root"></div>
-  </body>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>
