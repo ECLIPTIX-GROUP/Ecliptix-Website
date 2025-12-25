@@ -2,7 +2,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Logo } from './components/Logo';
 import { Hero } from './components/Hero';
-import { TechStack } from './components/TechStack';
 import { Features } from './components/Features';
 import { Services, servicesData } from './components/Services';
 import { Hub, productsData } from './components/Hub';
@@ -541,7 +540,6 @@ export default function App() {
         ) : (
           <>
             <Hero onDiscover={() => scrollToSection('services')} onOpenJournal={() => window.location.hash = '#/journal'} />
-            <TechStack />
             <About />
             <Process onStepClick={(step) => window.location.hash = `#/process/${step.id}`} />
             <Hub onProductClick={(p) => window.location.hash = `#/product/${p.id}`} isSection={true} />
