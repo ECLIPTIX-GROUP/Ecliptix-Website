@@ -9,7 +9,7 @@ export const productsData: ProductItem[] = [
     title: "PEST AI",
     subtitle: "Agritech Precision System",
     themeColor: "green",
-    icon: <img src="https://media.licdn.com/dms/image/v2/D4E0BAQF8aFwVyRfGHg/company-logo_200_200/B4EZU33xiUHcAI-/0/1740399123289?e=1767225600&v=beta&t=7D5Lb2mOY1FULswru3tiJqVGinxqcpTCjunP-CToiHI" alt="PEST AI Logo" className="w-full h-full object-cover rounded-lg" />,
+    icon: <img src="https://media.licdn.com/dms/image/v2/D4E0BAQF8aFwVyRfGHg/company-logo_200_200/B4EZU33xiUHcAI-/0/1740399123289?e=1770249600&v=beta&t=pQdPqv89wxWkCup5PFswTQw7v-VJPCoydCNJOAVz8vc" alt="PEST AI Logo" className="w-full h-full object-cover rounded-lg" />,
     description: "Une plateforme d’agriculture intelligente combinant IA, PESTFLY (Drones), Satellites et IoT pour réduire les pertes agricoles et optimiser les rendements.",
     targetAudience: "Agriculteurs, Coopératives, Instituts Agricoles, Agrobusiness",
     impactStats: [
@@ -147,7 +147,7 @@ export const productsData: ProductItem[] = [
     title: "LocalPro.AI",
     subtitle: "SMB Growth Engine",
     themeColor: "blue",
-    icon: <img src="https://media.licdn.com/dms/image/v2/D4D0BAQEntAyOwWUb0g/company-logo_200_200/B4DZsUpxv2J8AQ-/0/1765578062500?e=1767225600&v=beta&t=Mt_nY4KO_x2cCiynGSOhv_rJUOymanuKLrNxxPytWGo" alt="LocalPro Logo" className="w-full h-full object-cover rounded-lg" />,
+    icon: <img src="https://media.licdn.com/dms/image/v2/D4D0BAQEntAyOwWUb0g/company-logo_200_200/B4DZsUpxv2J8AQ-/0/1765578062500?e=1770249600&v=beta&t=Ai107VJTmQdhmae_xKSzFLxmbCfsb0--D4OVirv27lQ" alt="LocalPro Logo" className="w-full h-full object-cover rounded-lg" />,
     description: "L'assistant de croissance pour entrepreneurs. Automatisation marketing, CRM simplifié et acquisition client locale.",
     targetAudience: "Entrepreneurs, Artisans, Freelances, TPE/PME",
     impactStats: [
