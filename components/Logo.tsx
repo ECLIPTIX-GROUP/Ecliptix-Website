@@ -6,7 +6,7 @@ interface LogoProps {
 }
 
 export const Logo: React.FC<LogoProps> = ({ className = "h-16", withText = true }) => {
-  const logoUrl = "https://media.licdn.com/dms/image/v2/D4E0BAQEDRW1wrkNA2g/company-logo_200_200/B4EZn_LZ1.GoAI-/0/1760922804191/ecliptix_group_logo?e=1768435200&v=beta&t=xtgbP851Y9A0SavAuXy4a7BhX8UgyVXsSFuy3poYyFE";
+  const logoUrl = "https://media.licdn.com/dms/image/v2/D4E0BAQEDRW1wrkNA2g/company-logo_200_200/B4EZn_LZ1.GoAI-/0/1760922804191/ecliptix_group_logo?e=1770249600&v=beta&t=NWzvHcNYdQCi9_3h6LQNFYOfg5NbOerXs_sZLK5Uh8I";
 
   return (
     <div className={`flex items-center gap-4 ${className}`}>
